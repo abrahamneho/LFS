@@ -147,17 +147,46 @@ mkswap /dev/<yyy>
 ```
 ---
 
-## Step 4 — 
+## Step 4 — Choose a directory location
 
+### Set the variable
 ```bash
+export LFS=/mnt/lfs
+```
+### Check that LFS
+```bash
+echo $LFS
+```
 
+### Set the file mode
+```bash
+umask 022
+```
+### Check umask
+```bash
+umask
 ```
 ---
 
-## Step 5 — 
+## Step 5 — Create the mount point
 
 ```bash
+mkdir -pv $LFS
+```
+```bash
+mount -v -t ext4 /dev/<xxx> $LFS
+```
+### Set the owner and permission mode
+```bash
+chown root:root $LFS
+```
+```bash
+chmod 755 $LFS
+```
 
+### Enable swap partition
+```bash
+/sbin/swapon -v /dev/<zzz>
 ```
 ---
 
