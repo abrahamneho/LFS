@@ -10,147 +10,192 @@
 
 ---
 
-## Step 1 — Install build tools
+## Step 1 — Check whether your host system has all the appropriate versions
 
 ```bash
-sudo apt update
-sudo apt install -y build-essential bison flex libelf-dev libssl-dev \
-libncurses-dev bc grub2 grub-pc xorriso wget tar gawk texinfo libcrypt-dev mtools
-```
+cat > version-check.sh << "EOF"
+#!/bin/bash
+# A script to list version numbers of critical development tools
 
----
+# If you have tools installed in other directories, adjust PATH here AND
+# in ~lfs/.bashrc (section 4.4) as well.
 
-## Step 2 — Create working directory
+LC_ALL=C 
+PATH=/usr/bin:/bin
 
-```bash
-mkdir ~/myos
-cd ~/myos
-```
+bail() { echo "FATAL: $1"; exit 1; }
+grep --version > /dev/null 2> /dev/null || bail "grep does not work"
+sed '' /dev/null || bail "sed does not work"
+sort   /dev/null || bail "sort does not work"
 
----
-
-## Step 3 — Download and compile Linux Kernel
-
-```bash
-wget https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.6.138.tar.xz
-tar -xf linux-6.6.138.tar.xz
-cd linux-6.6.138
-make defconfig
-make -j$(nproc)
-```
-
----
-
-## Step 4 — Download and compile glibc
-
-```bash
-cd ~/myos
-wget https://ftp.gnu.org/gnu/glibc/glibc-2.39.tar.xz
-tar -xf glibc-2.39.tar.xz
-mkdir glibc-build
-cd glibc-build
-../glibc-2.39/configure --prefix=/usr --disable-werror
-make -j$(nproc)
-make install DESTDIR=~/myos/rootfs
-```
-
----
-
-## Step 5 — Download and compile Bash
-
-```bash
-cd ~/myos
-wget https://ftp.gnu.org/gnu/bash/bash-5.3.tar.gz
-tar -xf bash-5.3.tar.gz
-cd bash-5.3
-./configure --prefix=/usr
-make -j$(nproc)
-make install DESTDIR=~/myos/rootfs
-```
-
----
-
-## Step 6 — Download and compile GNU Coreutils
-
-```bash
-cd ~/myos
-wget https://ftp.gnu.org/gnu/coreutils/coreutils-9.4.tar.xz
-tar -xf coreutils-9.4.tar.xz
-cd coreutils-9.4
-./configure --prefix=/usr
-make -j$(nproc)
-make install DESTDIR=~/myos/rootfs
-```
-
----
-
-## Step 7 — Download and compile sysvinit
-
-```bash
-cd ~/myos
-wget https://github.com/slicer69/sysvinit/releases/download/3.08/sysvinit-3.08.tar.xz
-tar -xf sysvinit-3.08.tar.xz
-cd sysvinit-3.08
-make -j$(nproc)
-make install DESTDIR=~/myos/rootfs
-```
-
----
-
-## Step 8 — Create config files
-
-```bash
-mkdir -p ~/myos/rootfs/etc
-
-cat > ~/myos/rootfs/etc/inittab << 'INITTAB'
-::sysinit:/bin/mount -a
-::respawn:/bin/bash
-INITTAB
-
-cat > ~/myos/rootfs/etc/fstab << 'FSTAB'
-proc    /proc    proc    defaults    0 0
-sysfs   /sys     sysfs   defaults    0 0
-tmpfs   /tmp     tmpfs   defaults    0 0
-FSTAB
-```
-
----
-
-## Step 9 — Create essential folders
-
-```bash
-cd ~/myos/rootfs
-mkdir -p bin sbin usr/bin usr/sbin lib lib64 etc dev proc sys tmp home root
-```
-
----
-
-## Step 10 — Build bootable ISO
-
-```bash
-cd ~/myos
-mkdir -p iso/boot/grub
-cp linux-6.6.138/arch/x86/boot/bzImage iso/boot/vmlinuz
-
-cd rootfs
-find . | cpio -o -H newc | gzip > ../iso/boot/initrd.img
-cd ..
-
-cat > iso/boot/grub/grub.cfg << 'GRUB'
-set timeout=5
-set default=0
-menuentry "MyOS" {
-    linux /boot/vmlinuz root=/dev/ram0 rw
-    initrd /boot/initrd.img
+ver_check()
+{
+   if ! type -p $2 &>/dev/null
+   then 
+     echo "ERROR: Cannot find $2 ($1)"; return 1; 
+   fi
+   v=$($2 --version 2>&1 | grep -E -o '[0-9]+\.[0-9\.]+[a-z]*' | head -n1)
+   if printf '%s\n' $3 $v | sort --version-sort --check &>/dev/null
+   then 
+     printf "OK:    %-9s %-6s >= $3\n" "$1" "$v"; return 0;
+   else 
+     printf "ERROR: %-9s is TOO OLD ($3 or later required)\n" "$1"; 
+     return 1; 
+   fi
 }
-GRUB
 
-grub-mkrescue -o myos.iso iso/
-ls -lh ~/myos/myos.iso
+ver_kernel()
+{
+   kver=$(uname -r | grep -E -o '^[0-9\.]+')
+   if printf '%s\n' $1 $kver | sort --version-sort --check &>/dev/null
+   then 
+     printf "OK:    Linux Kernel $kver >= $1\n"; return 0;
+   else 
+     printf "ERROR: Linux Kernel ($kver) is TOO OLD ($1 or later required)\n" "$kver"; 
+     return 1; 
+   fi
+}
+
+# Coreutils first because --version-sort needs Coreutils >= 7.0
+ver_check Coreutils      sort     8.1 || bail "Coreutils too old, stop"
+ver_check Bash           bash     3.2
+ver_check Binutils       ld       2.13.1
+ver_check Bison          bison    2.7
+ver_check Diffutils      diff     2.8.1
+ver_check Findutils      find     4.2.31
+ver_check Gawk           gawk     4.0.1
+ver_check GCC            gcc      5.4
+ver_check "GCC (C++)"    g++      5.4
+ver_check Grep           grep     2.5.1a
+ver_check Gzip           gzip     1.3.12
+ver_check M4             m4       1.4.10
+ver_check Make           make     4.0
+ver_check Patch          patch    2.5.4
+ver_check Perl           perl     5.8.8
+ver_check Python         python3  3.4
+ver_check Sed            sed      4.1.5
+ver_check Tar            tar      1.22
+ver_check Texinfo        texi2any 5.0
+ver_check Xz             xz       5.0.0
+ver_kernel 5.4
+
+if mount | grep -q 'devpts on /dev/pts' && [ -e /dev/ptmx ]
+then echo "OK:    Linux Kernel supports UNIX 98 PTY";
+else echo "ERROR: Linux Kernel does NOT support UNIX 98 PTY"; fi
+
+alias_check() {
+   if $1 --version 2>&1 | grep -qi $2
+   then printf "OK:    %-4s is $2\n" "$1";
+   else printf "ERROR: %-4s is NOT $2\n" "$1"; fi
+}
+echo "Aliases:"
+alias_check awk GNU
+alias_check yacc Bison
+alias_check sh Bash
+
+echo "Compiler check:"
+if printf "int main(){}" | g++ -x c++ -
+then echo "OK:    g++ works";
+else echo "ERROR: g++ does NOT work"; fi
+rm -f a.out
+
+if [ "$(nproc)" = "" ]; then
+   echo "ERROR: nproc is not available or it produces empty output"
+else
+   echo "OK: nproc reports $(nproc) logical cores are available"
+fi
+EOF
+
+bash version-check.sh
 ```
 
+---
+
+## Step 2 — Start fdisk on your disk
+```bash
+fdisk /dev/<xxxx>
+```
+
+### See existing partitions
+```bash
+p
+```
+
+### Create a new partition
+```bash
+n
+```
+
+### Choose partition number
+### Choose first sector
+### Choose last sector
+### Write changes
+```bash
+w
+```
+---
+
+## Step 3 — Create an file system
+
+### ext4 file system
+```bash
+mkfs -v -t ext4 /dev/<xxx>
+```
+### Swap partition
+```bash
+mkswap /dev/<yyy>
+```
+---
+
+## Step 4 — 
+
+```bash
+
+```
+---
+
+## Step 5 — 
+
+```bash
+
+```
+---
+
+## Step 6 — 
+
+```bash
+
+```
+---
+
+## Step 7 — 
+
+```bash
+
+```
+---
+
+## Step 8 — 
+
+```bash
+
+```
+---
+
+## Step 9 — 
+
+```bash
+
+```
+---
+
+## Step 10 — 
+
+```bash
+
+```
 ---
 
 ## Result
 
-After all steps you will have `myos.iso` ready to boot
+After all steps you will have `LFS OS` ready.
