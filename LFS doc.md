@@ -190,41 +190,266 @@ chmod 755 $LFS
 ```
 ---
 
-## Step 6 — 
+## Step 6 — Create sources directory
 
 ```bash
-
+mkdir -v $LFS/sources
+```
+### Make this directory writable and sticky
+```bash
+chmod -v a+wt $LFS/sources
 ```
 ---
 
-## Step 7 — 
-
+## Step 7 — All packages
+### Download the packages
 ```bash
-
+wget https://www.linuxfromscratch.org/lfs/view/stable-systemd/wget-list-systemd
+```
+```bash
+wget --input-file=wget-list-systemd --continue --directory-prefix=$LFS/sources
+```
+### Verify packages
+```bash
+wget https://www.linuxfromscratch.org/lfs/view/stable-systemd/md5sums
+```
+```bash
+pushd $LFS/sources
+  md5sum -c md5sums
+popd
+```
+### Change the owners
+```bash
+chown root:root $LFS/sources/*
+```
+### Any needed Patches
+```bash
+wget -P $LFS/sources <Download>
+```
+```bash
+cd $LFS/sources
+md5sum -c <<< "MD5 sum  Download"
 ```
 ---
 
-## Step 8 — 
+## Step 8 — Creating a Limited Directory Layout
 
 ```bash
+mkdir -pv $LFS/{etc,var} $LFS/usr/{bin,lib,sbin}
 
+for i in bin lib sbin; do
+  ln -sv usr/$i $LFS/$i
+done
+
+case $(uname -m) in
+  x86_64) mkdir -pv $LFS/lib64 ;;
+esac
+```
+```bash
+mkdir -pv $LFS/tools
 ```
 ---
 
-## Step 9 — 
+## Step 9 — Adding the LFS User
 
 ```bash
-
+groupadd <user_name>
+useradd -s /bin/bash -g <user_name> -m -k /dev/null <user_name>
+```
+```bash
+passwd <user_name>
+```
+### Grant <user_name> full access
+```bash
+chown -v <user_name> $LFS/{usr{,/*},var,etc,tools}
+case $(uname -m) in
+  x86_64) chown -v <user_name> $LFS/lib64 ;;
+esac
+```
+### Login <user_name>
+```bash
+su - <user_name>
 ```
 ---
 
-## Step 10 — 
+## Step 10 — Creating two new startup files for the bash shell
 
 ```bash
-
+cat > ~/.bash_profile << "EOF"
+exec env -i HOME=$HOME TERM=$TERM PS1='\u:\w\$ ' /bin/bash
+EOF
+```
+```bash
+cat > ~/.bashrc << "EOF"
+set +h
+umask 022
+LFS=/mnt/lfs
+LC_ALL=POSIX
+LFS_TGT=$(uname -m)-lfs-linux-gnu
+PATH=/usr/bin
+if [ ! -L /bin ]; then PATH=/bin:$PATH; fi
+PATH=$LFS/tools/bin:$PATH
+CONFIG_SITE=$LFS/usr/share/config.site
+export LFS LC_ALL LFS_TGT PATH CONFIG_SITE
+EOF
+```
+### Change the exiting host file name
+```bash
+[ ! -e /etc/bash.bashrc ] || mv -v /etc/bash.bashrc /etc/bash.bashrc.NOUSE
+```
+###  Set MAKEFLAGS
+```bash
+cat >> ~/.bashrc << "EOF"
+export MAKEFLAGS=-j$(nproc)
+EOF
+```
+```bash
+source ~/.bash_profile
 ```
 ---
 
+## Step 11 - Compiling a Cross-Toolchain
+### Binutils-2.46.0 - Pass 1
+```bash
+tar -xf binutils-2.46.0.tar.xz 
+```
+```bash
+cd binutils-2.46.0
+```
+```bash
+mkdir -v build
+cd       build
+```
+```bash
+../configure --prefix=$LFS/tools \
+             --with-sysroot=$LFS \
+             --target=$LFS_TGT   \
+             --disable-nls       \
+             --enable-gprofng=no \
+             --disable-werror    \
+             --enable-new-dtags  \
+             --enable-default-hash-style=gnu
+```
+```bash
+make
+```
+```bash
+make install
+```
+```bash
+cd ../..
+```
+```bash
+rm -rf binutils-2.46.0
+```
+---
+
+## Step 12 - GCC-15.2.0 - Pass 1 
+```bash
+tar -xf gcc-15.2.0.tar.xz
+```
+```bash
+cd gcc-15.2.0
+```
+### Additional steps
+```bash
+tar -xf ../mpfr-4.2.2.tar.xz
+```
+```bash
+mv -v mpfr-4.2.2 mpfr
+```
+```bash
+tar -xf ../gmp-6.3.0.tar.xz
+```
+```bash
+mv -v gmp-6.3.0 gmp
+```
+```bash
+tar -xf ../mpc-1.3.1.tar.gz
+```
+```bash
+mv -v mpc-1.3.1 mpc
+```
+### Set the default directory name for 64-bit libraries to “lib”
+```bash
+case $(uname -m) in
+  x86_64)
+    sed -e '/m64=/s/lib64/lib/' \
+        -i.orig gcc/config/i386/t-linux64
+ ;;
+esac
+```
+### steps
+```bash
+mkdir -v build
+cd       build
+```
+```bash
+../configure                  \
+    --target=$LFS_TGT         \
+    --prefix=$LFS/tools       \
+    --with-glibc-version=2.43 \
+    --with-sysroot=$LFS       \
+    --with-newlib             \
+    --without-headers         \
+    --enable-default-pie      \
+    --enable-default-ssp      \
+    --disable-nls             \
+    --disable-shared          \
+    --disable-multilib        \
+    --disable-threads         \
+    --disable-libatomic       \
+    --disable-libgomp         \
+    --disable-libquadmath     \
+    --disable-libssp          \
+    --disable-libvtv          \
+    --disable-libstdcxx       \
+    --enable-languages=c,c++
+```
+```bash
+make
+```
+```bash
+make install
+```
+```bash
+cd ..
+cat gcc/limitx.h gcc/glimits.h gcc/limity.h > \
+  `dirname $($LFS_TGT-gcc -print-libgcc-file-name)`/include/limits.h
+```
+```bash
+cd ../..
+```
+```bash
+rm -rf gcc-15.2.0
+```
+## Step - 12 Linux-6.18.10 API Headers
+```bash
+tar -xf 
+```
+```bash
+cd 
+```
+```bash
+make mrproper
+```
+```bash
+make headers
+find usr/include -type f ! -name '*.h' -delete
+cp -rv usr/include $LFS/usr
+```
+```bash
+cd ../..
+```
+```bash
+rm -rf 
+```
+```bash
+
+```
+```bash
+
+```
 ## Result
 
 After all steps you will have `LFS OS` ready.
