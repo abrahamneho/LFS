@@ -1,15 +1,6 @@
 # Linux from scratch (LSF) commands in 2K26.
 ---
 
-## Requirements
-
-- Any Linux Distro
-- 4GB RAM minimum
-- 50GB free disk space
-- Internet connection
-
----
-
 ## Step 1 — Check whether your host system has all the appropriate versions
 
 ```bash
