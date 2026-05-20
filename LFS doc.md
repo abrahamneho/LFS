@@ -2,7 +2,6 @@
 ---
 
 ## Step 1 — Check whether your host system has all the appropriate versions
-
 ```bash
 cat > version-check.sh << "EOF"
 #!/bin/bash
@@ -115,19 +114,16 @@ sudo apt install -y \
 lsblk
 ```
 ```bash
-fdisk /dev/<xxxx>
+fdisk /dev/<xyz>
 ```
-
 ### See existing partitions
 ```bash
 p
 ```
-
 ### Create a new partition
 ```bash
 n
 ```
-
 ### Choose partition number
 ### Choose first sector
 ### Choose last sector
@@ -141,10 +137,13 @@ lsblk
 ---
 
 ## Step 3 — Create an file system
-
 ### ext4 file system
 ```bash
-mkfs -v -t ext4 /dev/<xxx>
+mkfs.ext4 ext4 /dev/<xxx>
+```
+### boot file system
+```bash
+mkfs.fat -F 32 /dev/<zzz>
 ```
 ### Swap partition
 ```bash
@@ -162,7 +161,6 @@ export LFS=/mnt/lfs
 ```bash
 echo $LFS
 ```
-
 ### Set the file mode
 ```bash
 umask 022
@@ -174,12 +172,17 @@ umask
 ---
 
 ## Step 5 — Create the mount point
-
 ```bash
-mkdir -pv $LFS
+mount --mkdir /dev/<xxx> $LFS
 ```
 ```bash
-mount -v -t ext4 /dev/<xxx> $LFS
+mount --mkdir /dev/<zzz> $LFS/boot/efi
+```
+```bash
+swapon /dev/<yyy>
+```
+```bash
+lsblk
 ```
 ### Set the owner and permission mode
 ```bash
@@ -188,15 +191,12 @@ chown root:root $LFS
 ```bash
 chmod 755 $LFS
 ```
-
-### Enable swap partition
 ```bash
-/sbin/swapon -v /dev/<zzz>
+ls -la $LFS
 ```
 ---
 
 ## Step 6 — Create sources directory
-
 ```bash
 mkdir -v $LFS/sources
 ```
@@ -207,18 +207,24 @@ chmod -v a+wt $LFS/sources
 ---
 
 ## Step 7 — All packages
-
-### Download the packages
+### Download lists
 ```bash
-wget -P $LFS/sources https://www.linuxfromscratch.org/lfs/view/stable-systemd/wget-list-systemd
+cd $LFS/sources
 ```
+```bash
+wget https://www.linuxfromscratch.org/lfs/view/stable-systemd/wget-list-systemd
+```
+```bash
+wget https://www.linuxfromscratch.org/lfs/view/stable-systemd/md5sums
+```
+```bash
+ls
+```
+### Download the packages
 ```bash
 wget --input-file=wget-list-systemd --continue --directory-prefix=$LFS/sources
 ```
 ### Verify packages
-```bash
-wget -P $LFS/sources https://www.linuxfromscratch.org/lfs/view/stable-systemd/md5sums
-```
 ```bash
 pushd $LFS/sources
   md5sum -c md5sums
