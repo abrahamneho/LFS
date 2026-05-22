@@ -322,10 +322,10 @@ echo $MAKEFLAGS
 ---
 
 ## Step 11 - Compiling a Cross-Toolchain
-### Binutils-2.46.0 - Pass 1
 ```bash
 cd $LFS/sources
 ```
+### Binutils-2.46.0 - Pass 1
 ```bash
 tar -xvf binutils-2.46.0.tar.xz
 ```
@@ -337,20 +337,14 @@ mkdir -v build
 cd       build
 ```
 ```bash
-../configure --prefix=$LFS/tools \
+ time { ../configure --prefix=$LFS/tools \
              --with-sysroot=$LFS \
              --target=$LFS_TGT   \
              --disable-nls       \
              --enable-gprofng=no \
              --disable-werror    \
              --enable-new-dtags  \
-             --enable-default-hash-style=gnu
-```
-```bash
-make
-```
-```bash
-make install
+             --enable-default-hash-style=gnu && make && make install; }
 ```
 ```bash
 cd ../..
@@ -401,7 +395,7 @@ mkdir -v build
 cd       build
 ```
 ```bash
-../configure                  \
+time { ../configure                  \
     --target=$LFS_TGT         \
     --prefix=$LFS/tools       \
     --with-glibc-version=2.43 \
@@ -420,13 +414,7 @@ cd       build
     --disable-libssp          \
     --disable-libvtv          \
     --disable-libstdcxx       \
-    --enable-languages=c,c++
-```
-```bash
-make
-```
-```bash
-make install
+    --enable-languages=c,c++ && make && make install; }
 ```
 ```bash
 cd ..
@@ -451,7 +439,11 @@ make mrproper
 ```
 ```bash
 make headers
+```
+```bash
 find usr/include -type f ! -name '*.h' -delete
+```
+```bash
 cp -rv usr/include $LFS/usr
 ```
 ```bash
@@ -506,6 +498,8 @@ sed '/RTLDLIST=/s@/usr@@g' -i $LFS/usr/bin/ldd
 ```
 ```bash
 echo 'int main(){}' | $LFS_TGT-gcc -x c - -v -Wl,--verbose &> dummy.log
+```
+```bash
 readelf -l a.out | grep ': /lib'
 ```
 ```bash
@@ -628,7 +622,11 @@ make
 ```
 ```bash
 make DESTDIR=$LFS install
+```
+```bash
 ln -sv libncursesw.so $LFS/usr/lib/libncurses.so
+```
+```bash
 sed -e 's/^#if.*XOPEN.*$/#if 1/' \
     -i $LFS/usr/include/curses.h
 ```
@@ -688,8 +686,14 @@ make DESTDIR=$LFS install
 ```
 ```bash
 mv -v $LFS/usr/bin/chroot              $LFS/usr/sbin
+```
+```bash
 mkdir -pv $LFS/usr/share/man/man8
+```
+```bash
 mv -v $LFS/usr/share/man/man1/chroot.1 $LFS/usr/share/man/man8/chroot.8
+```
+```bash
 sed -i 's/"1"/"8"/'                    $LFS/usr/share/man/man8/chroot.8
 ```
 ```bash
@@ -1082,7 +1086,7 @@ cd       build
     --disable-libssp           \
     --disable-libvtv           \
     --enable-languages=c,c++   \
-    LDFLAGS_FOR_TARGET=-L$PWD/$LFS_TGT/libgcc
+    LDFLAGS_FOR_TARGET=-L$PWD/$LFS_TGT/libgcc 
 ```
 ```bash
 make
@@ -1093,21 +1097,29 @@ make DESTDIR=$LFS install
 ```bash
 ln -sv gcc $LFS/usr/bin/cc
 ```
+
+
+
 ```bash
 cd ../..
 ```
 ```bash
 rm -rvf gcc-15.2.0
 ```
+
+
+
+---
 ## Step 13 - Entering Chroot and Building Additional Temporary Tools
+### Come back to root
+```bash
+exit
+```
 ### Changing Ownership
 ```bash
 echo $LFS
 ```
-#### If any error
-```bash
-export LFS=/mnt/lfs
-```
+### change the ownership of the $LFS/*
 ```bash
 chown --from <user_name> -R root:root $LFS/{usr,var,etc,tools}
 ```
@@ -1116,6 +1128,7 @@ case $(uname -m) in
   x86_64) chown --from <user_name> -R root:root $LFS/lib64 ;;
 esac
 ```
+### Creating the directories
 ```bash
 mkdir -pv $LFS/{dev,proc,sys,run}
 ```
@@ -1242,6 +1255,8 @@ EOF
 ```bash
 echo "tester:x:101:101::/home/tester:/bin/bash" >> /etc/passwd
 echo "tester:x:101:" >> /etc/group
+```
+```bash
 install -o tester -d /home/tester
 ```
 ```bash
@@ -1252,6 +1267,9 @@ touch /var/log/{btmp,lastlog,faillog,wtmp}
 chgrp -v utmp /var/log/lastlog
 chmod -v 664  /var/log/lastlog
 chmod -v 600  /var/log/btmp
+```
+```bash
+cd sources
 ```
 ### Gettext-1.0
 ```bash
@@ -1382,6 +1400,9 @@ tar -xvf util-linux-2.41.3.tar.xz
 ```
 ```bash
 cd util-linux-2.41.3
+```
+```bash
+mkdir -pv /var/lib/hwclock
 ```
 ```bash
 ./configure --libdir=/usr/lib     \
