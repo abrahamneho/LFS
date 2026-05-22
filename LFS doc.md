@@ -1559,57 +1559,49 @@ localedef -i zh_HK -f BIG5-HKSCS zh_HK.BIG5-HKSCS
 localedef -i zh_TW -f UTF-8 zh_TW.UTF-8
 ```
 ```bash
-
+make localedata/install-locales
 ```
 ```bash
+cat > /etc/nsswitch.conf << "EOF"
+# Begin /etc/nsswitch.conf
 
+passwd: files systemd
+group: files systemd
+shadow: files systemd
+
+hosts: mymachines resolve [!UNAVAIL=return] files myhostname dns
+networks: files
+
+protocols: files
+services: files
+ethers: files
+rpc: files
+
+# End /etc/nsswitch.conf
+EOF
 ```
 ```bash
-
+tar -xf ../../tzdata2025c.tar.gz
 ```
 ```bash
-
-```
-
-```bash
-
+ZONEINFO=/usr/share/zoneinfo
+mkdir -pv $ZONEINFO/{posix,right}
 ```
 ```bash
-
+for tz in etcetera southamerica northamerica europe africa antarctica  \
+          asia australasia backward; do
+    zic -L /dev/null   -d $ZONEINFO       ${tz}
+    zic -L /dev/null   -d $ZONEINFO/posix ${tz}
+    zic -L leapseconds -d $ZONEINFO/right ${tz}
+done
 ```
 ```bash
-
+cp -v zone.tab zone1970.tab iso3166.tab $ZONEINFO
+zic -d $ZONEINFO -p America/New_York
+unset ZONEINFO tz
 ```
 ```bash
-
-```
-```bash
-
-```
-```bash
-
-```
-```bash
-
-```
-```bash
-
-```
-
-```bash
-
-```
-```bash
-
-```
-
-
-```bash
-
-```
-
-```bash
-
+tzselect
 ```
 ```bash
 
@@ -1621,9 +1613,978 @@ localedef -i zh_TW -f UTF-8 zh_TW.UTF-8
 
 ```
 ```bash
+ln -sfv /usr/share/zoneinfo/<xxx> /etc/localtime
+```
+```bash
+cat > /etc/ld.so.conf << "EOF"
+# Begin /etc/ld.so.conf
+/usr/local/lib
+/opt/lib
+
+EOF
+```
+```bash
+cat >> /etc/ld.so.conf << "EOF"
+# Add an include directory
+include /etc/ld.so.conf.d/*.conf
+
+EOF
+```
+```bash
+mkdir -pv /etc/ld.so.conf.d
+```
+```bash
+cd ../..
+```
+```bash
+rm
+```
+### Zlib-1.3.2
+```bash
+tar 
+```
+```bash
+cd 
+```
+```bash
+./configure --prefix=/usr
+```
+```bash
+make
+```
+```bash
+make check
+```
+```bash
+make install
+```
+```bash
+rm -fv /usr/lib/libz.a
+```
+```bash
+cd ..
+```
+```bash
+rm
+```
+### Bzip2-1.0.8
+```bash
+tar
+```
+```bash
+cd 
+```
+```bash
+patch -Np1 -i ../bzip2-1.0.8-install_docs-1.patch
+```
+```bash
+sed -i 's@\(ln -s -f \)$(PREFIX)/bin/@\1@' Makefile
+```
+```bash
+sed -i "s@(PREFIX)/man@(PREFIX)/share/man@g" Makefile
+```
+```bash
+make -f Makefile-libbz2_so
+```
+```bash
+make clean
+```
+```bash
+make
+```
+```bash
+make PREFIX=/usr install
+```
+```bash
+cp -av libbz2.so.* /usr/lib
+```
+```bash
+ln -sfv libbz2.so.1.0.8 /usr/lib/libbz2.so
+```
+```bash
+ln -sfv libbz2.so.1.0.8 /usr/lib/libbz2.so.1
+```
+```bash
+cp -v bzip2-shared /usr/bin/bzip2
+```
+```bash
+for i in /usr/bin/{bzcat,bunzip2}; do
+  ln -sfv bzip2 $i
+done
+```
+```bash
+rm -fv /usr/lib/libbz2.a
+```
+```bash
+cd ..
+```
+```bash
+rm 
+```
+### Xz-5.8.2
+```bash
+tar
+```
+```bash
+cd 
+```
+```bash
+./configure --prefix=/usr    \
+            --disable-static \
+            --docdir=/usr/share/doc/xz-5.8.2
+```
+```bash
+make
+```
+```bash
+make check
+```
+```bash
+make install
+```
+```bash
+cd ..
+```
+```bash
+rm 
+```
+### Lz4-1.10.0
+```bash
+tar
+```
+```bash
+cd
+```
+```bash
+make BUILD_STATIC=no PREFIX=/usr
+```
+```bash
+make -j1 check
+```
+```bash
+make BUILD_STATIC=no PREFIX=/usr install
+```
+```bash
+cd ..
+```
+```bash
+rm
+```
+### Zstd-1.5.7
+```bash
+tar
+```
+```bash
+cd
+```
+```bash
+make prefix=/usr
+```
+```bash
+make check
+```
+```bash
+make prefix=/usr install
+```
+```bash
+rm -v /usr/lib/libzstd.a
+```
+```bash
+cd ..
+```
+```bash
+rm
+```
+### File-5.46
+```bash
+tar
+```
+```bash
+cd
+```
+```bash
+./configure --prefix=/usr
+```
+```bash
+make
+```
+```bash
+make check
+```
+```bash
+make install
+```
+```bash
+cd ..
+```
+```bash
+rm
+```
+### Readline-8.3
+```bash
+tar
+```
+```bash
+cd
+```
+```bash
+sed -i '/MV.*old/d' Makefile.in
+sed -i '/{OLDSUFF}/c:' support/shlib-install
+```
+```bash
+sed -i 's/-Wl,-rpath,[^ ]*//' support/shobj-conf
+```
+```bash
+sed -e '270a\
+     else\
+       chars_avail = 1;'      \
+    -e '288i\   result = -1;' \
+    -i.orig input.c
+```
+```bash
+./configure --prefix=/usr    \
+            --disable-static \
+            --with-curses    \
+            --docdir=/usr/share/doc/readline-8.3
+```
+```bash
+make SHLIB_LIBS="-lncursesw"
+```
+```bash
+make install
+```
+```bash
+install -v -m644 doc/*.{ps,pdf,html,dvi} /usr/share/doc/readline-8.3
+```
+```bash
+cd ..
+```
+```bash
+rm
+```
+### Pcre2-10.47
+```bash
+tar
+```
+```bash
+cd
+```
+```bash
+./configure --prefix=/usr                       \
+            --docdir=/usr/share/doc/pcre2-10.47 \
+            --enable-unicode                    \
+            --enable-jit                        \
+            --enable-pcre2-16                   \
+            --enable-pcre2-32                   \
+            --enable-pcre2grep-libz             \
+            --enable-pcre2grep-libbz2           \
+            --enable-pcre2test-libreadline      \
+            --disable-static
+```
+```bash
+make
+```
+```bash
+make check
+```
+```bash
+make install
+```
+```bash
+cd ..
+```
+```bash
+rm
+```
+### M4-1.4.21
+```bash
+tar
+```
+```bash
+cd
+```
+```bash
+./configure --prefix=/usr
+```
+```bash
+make
+```
+```bash
+make check
+```
+```bash
+make install
+```
+```bash
+cd ..
+```
+```bash
+rm
+```
+### Bc-7.0.3
+```bash
+tar
+```
+```bash
+cd
+```
+```bash
+CC='gcc -std=c99' ./configure --prefix=/usr -G -O3 -r
+```
+```bash
+make
+```
+```bash
+make test
+```
+```bash
+make install
+```
+```bash
+cd ..
+```
+```bash
+rm
+```
+### Flex-2.6.4
+```bash
+tar
+```
+```bash
+cd
+```
+```bash
+./configure --prefix=/usr    \
+            --disable-static \
+            --docdir=/usr/share/doc/flex-2.6.4
+```
+```bash
+make
+```
+```bash
+make check
+```
+```bash
+make install
+```
+```bash
+ln -sv flex   /usr/bin/lex
+ln -sv flex.1 /usr/share/man/man1/lex.1
+```
+```bash
+cd ..
+```
+```bash
+rm
+```
+### Tcl-8.6.17
+```bash
+tar
+```
+```bash
+cd
+```
+```bash
+SRCDIR=$(pwd)
+```
+```bash
+cd unix
+```
+```bash
+./configure --prefix=/usr           \
+            --mandir=/usr/share/man \
+            --disable-rpath
+```
+```bash
+make
+```
+```bash
+sed -e "s|$SRCDIR/unix|/usr/lib|" \
+    -e "s|$SRCDIR|/usr/include|"  \
+    -i tclConfig.sh
+```
+```bash
+sed -e "s|$SRCDIR/unix/pkgs/tdbc1.1.12|/usr/lib/tdbc1.1.12|" \
+    -e "s|$SRCDIR/pkgs/tdbc1.1.12/generic|/usr/include|"     \
+    -e "s|$SRCDIR/pkgs/tdbc1.1.12/library|/usr/lib/tcl8.6|"  \
+    -e "s|$SRCDIR/pkgs/tdbc1.1.12|/usr/include|"             \
+    -i pkgs/tdbc1.1.12/tdbcConfig.sh
+```
+```bash
+sed -e "s|$SRCDIR/unix/pkgs/itcl4.3.4|/usr/lib/itcl4.3.4|" \
+    -e "s|$SRCDIR/pkgs/itcl4.3.4/generic|/usr/include|"    \
+    -e "s|$SRCDIR/pkgs/itcl4.3.4|/usr/include|"            \
+    -i pkgs/itcl4.3.4/itclConfig.sh
+```
+```bash
+unset SRCDIR
+```
+```bash
+LC_ALL=C.UTF-8 make test
+```
+```bash
+make install 
+chmod 644 /usr/lib/libtclstub8.6.a
+```
+```bash
+chmod -v u+w /usr/lib/libtcl8.6.so
+```
+```bash
+make install-private-headers
+```
+```bash
+ln -sfv tclsh8.6 /usr/bin/tclsh
+```
+```bash
+mv -v /usr/share/man/man3/{Thread,Tcl_Thread}.3
+```
+```bash
+cd ..
+```
+```bash
+tar -xf ../tcl8.6.17-html.tar.gz --strip-components=1
+```
+```bash
+mkdir -v -p /usr/share/doc/tcl-8.6.17
+```
+```bash
+cp -v -r  ./html/* /usr/share/doc/tcl-8.6.17
+```
+```bash
+cd ..
+```
+```bash
+rm
+```
+### Expect-5.45.4
+```bash
+tar
+```
+```bash
+cd 
+```
+```bash
+python3 -c 'from pty import spawn; spawn(["echo", "ok"])'
+```
+```bash
+patch -Np1 -i ../expect-5.45.4-gcc15-1.patch
+```
+```bash
+./configure --prefix=/usr           \
+            --with-tcl=/usr/lib     \
+            --enable-shared         \
+            --disable-rpath         \
+            --mandir=/usr/share/man \
+            --with-tclinclude=/usr/include
+```
+```bash
+make
+```
+```bash
+make test
+```
+```bash
+make install
+```
+```bash
+ln -svf expect5.45.4/libexpect5.45.4.so /usr/lib
+```
+```bash
+cd ..
+```
+```bash
+rm
+```
+### DejaGNU-1.6.3
+```bash
+tar 
+```
+```bash
+cd 
+```
+```bash
+mkdir -v build
+cd       build
+```
+```bash
+../configure --prefix=/usr
+makeinfo --html --no-split -o doc/dejagnu.html ../doc/dejagnu.texi
+makeinfo --plaintext       -o doc/dejagnu.txt  ../doc/dejagnu.texi
+```
+```bash
+make check
+```
+```bash
+make install
+```
+```bash
+install -v -dm755  /usr/share/doc/dejagnu-1.6.3
+install -v -m644   doc/dejagnu.{html,txt} /usr/share/doc/dejagnu-1.6.3
+```
+```bash
+cd ..
+```
+```bash
+rm
+```
+### Pkgconf-2.5.1
+```bash
+tar
+```
+```bash
+cd
+```
+```bash
+./configure --prefix=/usr    \
+            --disable-static \
+            --docdir=/usr/share/doc/pkgconf-2.5.1
+```
+```bash
+make
+```
+```bash
+make install
+```
+```bash
+ln -sv pkgconf   /usr/bin/pkg-config
+ln -sv pkgconf.1 /usr/share/man/man1/pkg-config.1
+```
+```bash
+cd ..
+```
+```bash
+rm
+```
+### Binutils-2.46.0
+```bash
+tar
+```
+```bash
+cd
+```
+```bash
+mkdir -v build
+cd       build
+```
+```bash
+../configure --prefix=/usr       \
+             --sysconfdir=/etc   \
+             --enable-ld=default \
+             --enable-plugins    \
+             --enable-shared     \
+             --disable-werror    \
+             --enable-64-bit-bfd \
+             --enable-new-dtags  \
+             --with-system-zlib  \
+             --enable-default-hash-style=gnu
+```
+```bash
+make tooldir=/usr
+```
+```bash
+make -k check
+```
+```bash
+grep '^FAIL:' $(find -name '*.log')
+```
+```bash
+make tooldir=/usr install
+```
+```bash
+rm -rfv /usr/lib/lib{bfd,ctf,ctf-nobfd,gprofng,opcodes,sframe}.a \
+        /usr/share/doc/gprofng/
+```
+```bash
+cd ..
+```
+```bash
+rm
+```
+### GMP-6.3.0
+```bash
+tar
+```
+```bash
+cd
+```
+```bash
+sed -i '/long long t1;/,+1s/()/(...)/' configure
+```
+```bash
+./configure --prefix=/usr    \
+            --enable-cxx     \
+            --disable-static \
+            --docdir=/usr/share/doc/gmp-6.3.0
+```
+```bash
+make
+```
+```bash
+make html
+```
+```bash
+make check 2>&1 | tee gmp-check-log
+```
+```bash
+awk '/# PASS:/{total+=$3} ; END{print total}' gmp-check-log
+```
+```bash
+make install
+```
+```bash
+make install-html
+```
+```bash
+cd ..
+```
+```bash
+rm
+```
+### MPFR-4.2.2
+```bash
+tar
+```
+```bash
+cd
+```
+```bash
+./configure --prefix=/usr        \
+            --disable-static     \
+            --enable-thread-safe \
+            --docdir=/usr/share/doc/mpfr-4.2.2
+```
+```bash
+make
+```
+```bash
+make html
+```
+```bash
+make check
+```
+```bash
+make install
+```
+```bash
+make install-html
+```
+```bash
+cd ..
+```
+```bash
+rm
+```
+### MPC-1.3.1
+```bash
+tar
+```
+```bash
+cd
+```
+```bash
+./configure --prefix=/usr    \
+            --disable-static \
+            --docdir=/usr/share/doc/mpc-1.3.1
+```
+```bash
+make
+```
+```bash
+make html
+```
+```bash
+make check
+```
+```bash
+make install
+```
+```bash
+make install-html
+```
+```bash
+cd ..
+```
+```bash
+rm
+```
+### Attr-2.5.2
+```bash
+tar
+```
+```bash
+cd
+```
+```bash
+./configure --prefix=/usr     \
+            --disable-static  \
+            --sysconfdir=/etc \
+            --docdir=/usr/share/doc/attr-2.5.2
+```
+```bash
+make
+```
+```bash
+make check
+```
+```bash
+make install
+```
+```bash
+cd ..
+```
+```bash
+rm
+```
+### Acl-2.3.2
+```bash
+tar
+```
+```bash
+cd
+```
+```bash
+./configure --prefix=/usr    \
+            --disable-static \
+            --docdir=/usr/share/doc/acl-2.3.2
+```
+```bash
+make
+```
+```bash
+make check
+```
+```bash
+make install
+```
+```bash
+cd ..
+```
+```bash
+rm
+```
+### Libcap-2.77
+```bash
+tar
+```
+```bash
+cd
+```
+```bash
+sed -i '/install -m.*STA/d' libcap/Makefile
+```
+```bash
+make prefix=/usr lib=lib
+```
+```bash
+make test
+```
+```bash
+make prefix=/usr lib=lib install
+```
+```bash
+cd ..
+```
+```bash
+rm
+```
+### Libxcrypt-4.5.2
+```bash
+tar
+```
+```bash
+cd
+```
+```bash
+sed -i '/strchr/s/const//' lib/crypt-{sm3,gost}-yescrypt.c
+```
+```bash
+./configure --prefix=/usr                \
+            --enable-hashes=strong,glibc \
+            --enable-obsolete-api=no     \
+            --disable-static             \
+            --disable-failure-tokens
+```
+```bash
+make
+```
+```bash
+make check
+```
+```bash
+make install
+```
+```bash
+cd ..
+```
+```bash
+rm
+```
+### Shadow-4.19.3
+```bash
+tar
+```
+```bash
+cd
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
 
 ```
 
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
 ## Result
 
 After all steps you will have `LFS OS` ready.
