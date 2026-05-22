@@ -226,28 +226,33 @@ wget --input-file=wget-list-systemd --continue --directory-prefix=$LFS/sources
 ```
 ### Verify packages
 ```bash
-pushd $LFS/sources
-  md5sum -c md5sums
-popd
+md5sum -c md5sums | less
 ```
 ### Change the owners
 ```bash
 chown root:root $LFS/sources/*
 ```
+```bash
+ls -la
+```
 ---
 
 ## Step 8 — Creating a Limited Directory Layout
-
 ```bash
 mkdir -pv $LFS/{etc,var} $LFS/usr/{bin,lib,sbin}
-
+```
+```bash
 for i in bin lib sbin; do
   ln -sv usr/$i $LFS/$i
 done
-
+```
+```bash
 case $(uname -m) in
   x86_64) mkdir -pv $LFS/lib64 ;;
 esac
+```
+```bash
+uname -m
 ```
 ```bash
 mkdir -pv $LFS/tools
@@ -255,29 +260,31 @@ mkdir -pv $LFS/tools
 ---
 
 ## Step 9 — Adding the LFS User
-
 ```bash
-groupadd <user_name>
-useradd -s /bin/bash -g <user_name> -m -k /dev/null <user_name>
+groupadd lfs
 ```
 ```bash
-passwd <user_name>
+useradd -s /bin/bash -g lfs -m -k /dev/null lfs
 ```
-### Grant <user_name> full access
+```bash
+passwd lfs
+```
+### Grant LFS User full access
 ```bash
 chown -v <user_name> $LFS/{usr{,/*},var,etc,tools}
+```
+```bash
 case $(uname -m) in
   x86_64) chown -v <user_name> $LFS/lib64 ;;
 esac
 ```
-### Login <user_name>
+### Login LFS User
 ```bash
-su - <user_name>
+su - lfs
 ```
 ---
 
 ## Step 10 — Creating two new startup files for the bash shell
-
 ```bash
 cat > ~/.bash_profile << "EOF"
 exec env -i HOME=$HOME TERM=$TERM PS1='\u:\w\$ ' /bin/bash
@@ -297,14 +304,10 @@ CONFIG_SITE=$LFS/usr/share/config.site
 export LFS LC_ALL LFS_TGT PATH CONFIG_SITE
 EOF
 ```
-### Change the exiting host file name (Optional)
-```bash
-su -
-```
-```bash
-[ ! -e /etc/bash.bashrc ] || mv -v /etc/bash.bashrc /etc/bash.bashrc.NOUSE
-```
 ###  Set MAKEFLAGS
+```bash
+nproc
+```
 ```bash
 cat >> ~/.bashrc << "EOF"
 export MAKEFLAGS=-j$(nproc)
@@ -315,20 +318,6 @@ source ~/.bash_profile
 ```
 ```bash
 echo $MAKEFLAGS
-```
-### Check the powerprofilesctl
-```bash
-powerprofilesctl
-```
-### change to performance
-```bash
-su -
-```
-```bash
-powerprofilesctl set performance
-```
-```bash
-su - <user_name>
 ```
 ---
 
