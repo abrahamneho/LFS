@@ -2931,34 +2931,44 @@ tar
 cd
 ```
 ```bash
-
+sed -i 's/def HAVE_TERMCAP_TGETENT/ 1/' telnet/telnet.c
 ```
 ```bash
-
+./configure --prefix=/usr        \
+            --bindir=/usr/bin    \
+            --localstatedir=/var \
+            --disable-logger     \
+            --disable-whois      \
+            --disable-rcp        \
+            --disable-rexec      \
+            --disable-rlogin     \
+            --disable-rsh        \
+            --disable-servers
 ```
 ```bash
-
+make
 ```
 ```bash
-
+make check
 ```
 ```bash
-
+make install
 ```
 ```bash
-
+mv -v /usr/{,s}bin/ifconfig
 ```
 ```bash
-
+cd ..
 ```
 ```bash
-
+rm
+```
+### Less-692
+```bash
+tar
 ```
 ```bash
-
-```
-```bash
-
+cd 
 ```
 ```bash
 
