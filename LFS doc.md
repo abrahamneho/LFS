@@ -1097,18 +1097,12 @@ make DESTDIR=$LFS install
 ```bash
 ln -sv gcc $LFS/usr/bin/cc
 ```
-
-
-
 ```bash
 cd ../..
 ```
 ```bash
 rm -rvf gcc-15.2.0
 ```
-
-
-
 ---
 ## Step 13 - Entering Chroot and Building Additional Temporary Tools
 ### Come back to root
@@ -2427,6 +2421,1512 @@ tar
 cd
 ```
 ```bash
+sed -i 's/groups$(EXEEXT) //' src/Makefile.in
+find man -name Makefile.in -exec sed -i 's/groups\.1 / /'   {} \;
+find man -name Makefile.in -exec sed -i 's/getspnam\.3 / /' {} \;
+find man -name Makefile.in -exec sed -i 's/passwd\.5 / /'   {} \;
+```
+```bash
+sed -e 's:#ENCRYPT_METHOD DES:ENCRYPT_METHOD YESCRYPT:' \
+    -e 's:/var/spool/mail:/var/mail:'                   \
+    -e '/PATH=/{s@/sbin:@@;s@/bin:@@}'                  \
+    -i etc/login.defs
+```
+```bash
+touch /usr/bin/passwd
+```
+```bash
+./configure --sysconfdir=/etc   \
+            --disable-static    \
+            --with-{b,yes}crypt \
+            --without-libbsd    \
+            --disable-logind    \
+            --with-group-name-max-length=32
+```
+```bash
+make
+```
+```bash
+make exec_prefix=/usr install
+```
+```bash
+make -C man install-man
+```
+```bash
+pwconv
+```
+```bash
+grpconv
+```
+```bash
+mkdir -p /etc/default
+```
+```bash
+useradd -D --gid 999
+```
+```bash
+sed -i '/MAIL/s/yes/no/' /etc/default/useradd
+```
+#### Set password
+```bash
+passwd root
+```
+#### New password
+#### Re-enter new password
+```bash
+cd ..
+```
+```bash
+rm
+```
+### GCC-15.2.0
+```bash
+tar
+```
+```bash
+cd
+```
+```bash
+sed -i 's/char [*]q/const &/' libgomp/affinity-fmt.c
+```
+```bash
+case $(uname -m) in
+  x86_64)
+    sed -e '/m64=/s/lib64/lib/' \
+        -i.orig gcc/config/i386/t-linux64
+  ;;
+esac
+```
+```bash
+mkdir -v build
+cd       build
+```
+```bash
+../configure --prefix=/usr            \
+             LD=ld                    \
+             --enable-languages=c,c++ \
+             --enable-default-pie     \
+             --enable-default-ssp     \
+             --enable-host-pie        \
+             --disable-multilib       \
+             --disable-bootstrap      \
+             --disable-fixincludes    \
+             --with-system-zlib
+```
+```bash
+make
+```
+```bash
+ulimit -s -H unlimited
+```
+```bash
+sed -e '/cpython/d' -i ../gcc/testsuite/gcc.dg/plugin/plugin.exp
+```
+```bash
+chown -R tester .
+```
+```bash
+su tester -c "PATH=$PATH make -k check"
+```
+```bash
+../contrib/test_summary
+```
+```bash
+make install
+```
+```bash
+chown -v -R root:root \
+    /usr/lib/gcc/$(gcc -dumpmachine)/15.2.0/include{,-fixed}
+```
+```bash
+ln -svr /usr/bin/cpp /usr/lib
+```
+```bash
+ln -sv gcc.1 /usr/share/man/man1/cc.1
+```
+```bash
+ln -sfv ../../libexec/gcc/$(gcc -dumpmachine)/15.2.0/liblto_plugin.so \
+        /usr/lib/bfd-plugins/
+```
+```bash
+echo 'int main(){}' | cc -x c - -v -Wl,--verbose &> dummy.log
+readelf -l a.out | grep ': /lib'
+```
+```bash
+grep -E -o '/usr/lib.*/S?crt[1in].*succeeded' dummy.log
+```
+```bash
+grep -B4 '^ /usr/include' dummy.log
+```
+```bash
+grep 'SEARCH.*/usr/lib' dummy.log |sed 's|; |\n|g'
+```
+```bash
+grep "/lib.*/libc.so.6 " dummy.log
+```
+```bash
+grep found dummy.log
+```
+```bash
+rm -v a.out dummy.log
+```
+```bash
+mkdir -pv /usr/share/gdb/auto-load/usr/lib
+```
+```bash
+mv -v /usr/lib/*gdb.py /usr/share/gdb/auto-load/usr/lib
+```
+```bash
+cd ../..
+```
+```bash
+rm
+```
+### Ncurses-6.6
+```bash
+tar
+```
+```bash
+cd
+```
+```bash
+./configure --prefix=/usr           \
+            --mandir=/usr/share/man \
+            --with-shared           \
+            --without-debug         \
+            --without-normal        \
+            --with-cxx-shared       \
+            --enable-pc-files       \
+            --with-pkg-config-libdir=/usr/lib/pkgconfig
+```
+```bash
+make
+```
+```bash
+make DESTDIR=$PWD/dest install
+```
+```bash
+sed -e 's/^#if.*XOPEN.*$/#if 1/' \
+    -i dest/usr/include/curses.h
+cp --remove-destination -av dest/* /
+```
+```bash
+for lib in ncurses form panel menu ; do
+    ln -sfv lib${lib}w.so /usr/lib/lib${lib}.so
+    ln -sfv ${lib}w.pc    /usr/lib/pkgconfig/${lib}.pc
+done
+```
+```bash
+ln -sfv libncursesw.so /usr/lib/libcurses.so
+```
+```bash
+cp -v -R doc -T /usr/share/doc/ncurses-6.6
+```
+```bash
+cd ..
+```
+```bash
+rm
+```
+### Sed-4.9
+```bash
+tar
+```
+```bash
+cd
+```
+```bash
+./configure --prefix=/usr
+```
+```bash
+make
+```
+```bash
+make html
+```
+```bash
+chown -R tester .
+```
+```bash
+su tester -c "PATH=$PATH make check"
+```
+```bash
+make install
+```
+```bash
+install -d -m755           /usr/share/doc/sed-4.9
+```
+```bash
+install -m644 doc/sed.html /usr/share/doc/sed-4.9
+```
+```bash
+cd ..
+```
+```bash
+rm
+```
+### Psmisc-23.7
+```bash
+tar
+```
+```bash
+cd
+```
+```bash
+./configure --prefix=/usr
+```
+```bash
+make
+```
+```bash
+make check
+```
+```bash
+make install
+```
+```bash
+cd ..
+```
+```bash
+rm
+```
+### Gettext-1.0
+```bash
+tar
+```
+```bash
+cd 
+```
+```bash
+./configure --prefix=/usr    \
+            --disable-static \
+            --docdir=/usr/share/doc/gettext-1.0
+```
+```bash
+make
+```
+```bash
+make check
+```
+```bash
+make install
+```
+```bash
+chmod -v 0755 /usr/lib/preloadable_libintl.so
+```
+```bash
+cd ..
+```
+```bash
+rm
+```
+### Bison-3.8.2
+```bash
+tar
+```
+```bash
+cd 
+```
+```bash
+./configure --prefix=/usr --docdir=/usr/share/doc/bison-3.8.2
+```
+```bash
+make
+```
+```bash
+make check
+```
+```bash
+make install
+```
+```bash
+cd ..
+```
+```bash
+rm
+```
+### Grep-3.12
+```bash
+tar 
+```
+```bash
+cd
+```
+```bash
+sed -i "s/echo/#echo/" src/egrep.sh
+```
+```bash
+./configure --prefix=/usr
+```
+```bash
+make
+```
+```bash
+make check
+```
+```bash
+make install
+```
+```bash
+cd ..
+```
+```bash
+rm
+```
+### Bash-5.3
+```bash
+tar
+```
+```bash
+cd
+```
+```bash
+./configure --prefix=/usr             \
+            --without-bash-malloc     \
+            --with-installed-readline \
+            --docdir=/usr/share/doc/bash-5.3
+```
+```bash
+make
+```
+```bash
+chown -R tester .
+```
+```bash
+LC_ALL=C.UTF-8 su -s /usr/bin/expect tester << "EOF"
+set timeout -1
+spawn make tests
+expect eof
+lassign [wait] _ _ _ value
+exit $value
+EOF
+```
+```bash
+make install
+```
+```bash
+exec /usr/bin/bash --login
+```
+```bash
+cd ..
+```
+```bash
+rm
+```
+### Libtool-2.5.4
+```bash
+tar
+```
+```bash
+cd
+```
+```bash
+./configure --prefix=/usr
+```
+```bash
+make
+```
+```bash
+make check
+```
+```bash
+make install
+```
+```bash
+rm -fv /usr/lib/libltdl.a
+```
+```bash
+cd ..
+```
+```bash
+rm
+```
+### GDBM-1.26
+```bash
+tar
+```
+```bash
+cd
+```
+```bash
+./configure --prefix=/usr    \
+            --disable-static \
+            --enable-libgdbm-compat
+```
+```bash
+make
+```
+```bash
+make check
+```
+```bash
+make install
+```
+```bash
+cd ..
+```
+```bash
+rm
+```
+### Gperf-3.3
+```bash
+tar
+```
+```bash
+cd 
+```
+```bash
+./configure --prefix=/usr --docdir=/usr/share/doc/gperf-3.3
+```
+```bash
+make
+```
+```bash
+make check
+```
+```bash
+make install
+```
+```bash
+cd ..
+```
+```bash
+rm
+```
+### Expat-2.7.4
+```bash
+tar
+```
+```bash
+cd
+```
+```bash
+./configure --prefix=/usr    \
+            --disable-static \
+            --docdir=/usr/share/doc/expat-2.7.4
+```
+```bash
+make
+```
+```bash
+make check
+```
+```bash
+make install
+```
+```bash
+install -v -m644 doc/*.{html,css} /usr/share/doc/expat-2.7.4
+```
+```bash
+cd ..
+```
+```bash
+rm
+```
+### Inetutils-2.7
+```bash
+tar
+```
+```bash
+cd
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
 
 ```
 ```bash
@@ -2508,7 +4008,6 @@ cd
 ```bash
 
 ```
-
 ```bash
 
 ```
@@ -2560,7 +4059,60 @@ cd
 ```bash
 
 ```
+```bash
 
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
 ```bash
 
 ```
