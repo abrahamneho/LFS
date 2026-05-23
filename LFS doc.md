@@ -2971,131 +2971,150 @@ tar
 cd 
 ```
 ```bash
-
+./configure --prefix=/usr --sysconfdir=/etc
 ```
 ```bash
-
+make
 ```
 ```bash
-
+make check
 ```
 ```bash
-
+make install
 ```
 ```bash
-
+cd ..
 ```
 ```bash
-
+rm
+```
+### Perl-5.42.0
+```bash
+tar
 ```
 ```bash
-
+cd 
 ```
 ```bash
-
+export BUILD_ZLIB=False
 ```
 ```bash
-
+export BUILD_BZIP2=0
 ```
 ```bash
-
+sh Configure -des                                          \
+             -D prefix=/usr                                \
+             -D vendorprefix=/usr                          \
+             -D privlib=/usr/lib/perl5/5.42/core_perl      \
+             -D archlib=/usr/lib/perl5/5.42/core_perl      \
+             -D sitelib=/usr/lib/perl5/5.42/site_perl      \
+             -D sitearch=/usr/lib/perl5/5.42/site_perl     \
+             -D vendorlib=/usr/lib/perl5/5.42/vendor_perl  \
+             -D vendorarch=/usr/lib/perl5/5.42/vendor_perl \
+             -D man1dir=/usr/share/man/man1                \
+             -D man3dir=/usr/share/man/man3                \
+             -D pager="/usr/bin/less -isR"                 \
+             -D useshrplib                                 \
+             -D usethreads
 ```
 ```bash
-
+make
 ```
 ```bash
-
+TEST_JOBS=$(nproc) make test_harness
 ```
 ```bash
-
+make install
+unset BUILD_ZLIB BUILD_BZIP2
 ```
 ```bash
-
+cd ..
 ```
 ```bash
-
+rm
+```
+### XML::Parser-2.47
+```bash
+tar
 ```
 ```bash
-
+cd 
 ```
 ```bash
-
+perl Makefile.PL
 ```
 ```bash
-
+make
 ```
 ```bash
-
+make test
 ```
 ```bash
-
+make install
 ```
 ```bash
-
+cd ..
 ```
 ```bash
-
+rm 
+```
+### Intltool-0.51.0
+```bash
+tar
 ```
 ```bash
-
+cd
 ```
 ```bash
-
+sed -i 's:\\\${:\\\$\\{:' intltool-update.in
 ```
 ```bash
-
+./configure --prefix=/usr
 ```
 ```bash
-
+make
 ```
 ```bash
-
+make check
 ```
 ```bash
-
+make install
 ```
 ```bash
-
+install -v -Dm644 doc/I18N-HOWTO /usr/share/doc/intltool-0.51.0/I18N-HOWTO
 ```
 ```bash
-
+cd ..
 ```
 ```bash
-
+rm
+```
+### Autoconf-2.72
+```bash
+tar
 ```
 ```bash
-
+cd
 ```
 ```bash
-
+./configure --prefix=/usr
 ```
 ```bash
-
+make
 ```
 ```bash
-
+make check
 ```
 ```bash
-
+make install
 ```
 ```bash
-
+cd ..
 ```
 ```bash
-
+rm
 ```
-```bash
-
-```
-```bash
-
-```
-```bash
-
-```
-```bash
-
-```
+### Automake-1.18.1
 ```bash
 
 ```
