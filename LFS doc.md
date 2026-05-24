@@ -3611,23 +3611,24 @@ tar
 cd
 ```
 ```bash
-
+PAGE=A4 ./configure --prefix=/usr
 ```
 ```bash
-
+make
 ```
 ```bash
-
+make check
 ```
 ```bash
-
+make install
 ```
 ```bash
-
+cd ..
 ```
 ```bash
-
+rm
 ```
+### GRUB-2.14
 ```bash
 
 ```
