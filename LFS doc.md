@@ -3116,433 +3116,499 @@ rm
 ```
 ### Automake-1.18.1
 ```bash
-
+tar
 ```
 ```bash
-
+cd
 ```
 ```bash
-
+./configure --prefix=/usr --docdir=/usr/share/doc/automake-1.18.1
 ```
 ```bash
-
+make
 ```
 ```bash
-
+make -j$(($(nproc)>4?$(nproc):4)) check
 ```
 ```bash
-
+make install
 ```
 ```bash
-
+cd ..
 ```
 ```bash
-
+rm
 ```
+### OpenSSL-3.6.1
 ```bash
-
+tar
 ```
 ```bash
-
+cd
 ```
 ```bash
-
+./config --prefix=/usr         \
+         --openssldir=/etc/ssl \
+         --libdir=lib          \
+         shared                \
+         zlib-dynamic
 ```
 ```bash
-
+make
 ```
 ```bash
-
+HARNESS_JOBS=$(nproc) make test
 ```
 ```bash
-
+sed -i '/INSTALL_LIBS/s/libcrypto.a libssl.a//' Makefile
+make MANSUFFIX=ssl install
 ```
 ```bash
-
+mv -v /usr/share/doc/openssl /usr/share/doc/openssl-3.6.1
 ```
 ```bash
-
+cp -vfr doc/* /usr/share/doc/openssl-3.6.1
 ```
 ```bash
-
+cd ..
 ```
 ```bash
-
+rm
 ```
+### Libelf from Elfutils-0.194
 ```bash
-
+tar
 ```
 ```bash
-
+cd
 ```
 ```bash
-
+./configure --prefix=/usr        \
+            --disable-debuginfod \
+            --enable-libdebuginfod=dummy
 ```
 ```bash
-
+make -C lib
+make -C libelf
 ```
 ```bash
-
+make -C libelf install
+install -vm644 config/libelf.pc /usr/lib/pkgconfig
+rm /usr/lib/libelf.a
 ```
 ```bash
-
+cd ..
 ```
 ```bash
-
+rm
 ```
+### Libffi-3.5.2
 ```bash
-
+tar
 ```
 ```bash
-
+cd
 ```
 ```bash
-
+./configure --prefix=/usr    \
+            --disable-static \
+            --with-gcc-arch=native
 ```
 ```bash
-
+make
 ```
 ```bash
-
+make check
 ```
 ```bash
-
+make install
 ```
 ```bash
-
+cd ..
 ```
 ```bash
-
+rm
 ```
+### Sqlite-3510200
 ```bash
-
+tar
 ```
 ```bash
-
+cd 
 ```
 ```bash
-
+tar -xf ../sqlite-doc-3510200.tar.xz
 ```
 ```bash
-
+./configure --prefix=/usr     \
+            --disable-static  \
+            --enable-fts{4,5} \
+            CPPFLAGS="-D SQLITE_ENABLE_COLUMN_METADATA=1 \
+                      -D SQLITE_ENABLE_UNLOCK_NOTIFY=1   \
+                      -D SQLITE_ENABLE_DBSTAT_VTAB=1     \
+                      -D SQLITE_SECURE_DELETE=1"
 ```
 ```bash
-
+make LDFLAGS.rpath=""
 ```
 ```bash
-
+make install
 ```
 ```bash
-
+install -v -m755 -d /usr/share/doc/sqlite-3.51.2
+cp -v -R sqlite-doc-3510200/* /usr/share/doc/sqlite-3.51.2
 ```
 ```bash
-
+cd ..
 ```
 ```bash
-
+rm
 ```
+### Python-3.14.3
 ```bash
-
+tar 
 ```
 ```bash
-
+cd 
 ```
 ```bash
-
+./configure --prefix=/usr          \
+            --enable-shared        \
+            --with-system-expat    \
+            --enable-optimizations \
+            --without-static-libpython
 ```
 ```bash
-
+make
 ```
 ```bash
-
+make test TESTOPTS="--timeout 120"
 ```
 ```bash
-
+make install
 ```
 ```bash
-
+cat > /etc/pip.conf << EOF
+[global]
+root-user-action = ignore
+disable-pip-version-check = true
+EOF
 ```
 ```bash
-
+install -v -dm755 /usr/share/doc/python-3.14.3/html
 ```
 ```bash
-
+tar --strip-components=1  \
+    --no-same-owner       \
+    --no-same-permissions \
+    -C /usr/share/doc/python-3.14.3/html \
+    -xvf ../python-3.14.3-docs-html.tar.bz2
 ```
 ```bash
-
+cd ..
 ```
 ```bash
-
+rm
 ```
+### Flit-Core-3.12.0
 ```bash
-
+tar
 ```
 ```bash
-
+cd 
 ```
 ```bash
-
+pip3 wheel -w dist --no-cache-dir --no-build-isolation --no-deps $PWD
 ```
 ```bash
-
+pip3 install --no-index --find-links dist flit_core
 ```
 ```bash
-
+cd ..
 ```
 ```bash
-
+rm
 ```
+### Packaging-26.0
 ```bash
-
+tar
 ```
 ```bash
-
+cd
 ```
 ```bash
-
+pip3 wheel -w dist --no-cache-dir --no-build-isolation --no-deps $PWD
 ```
 ```bash
-
+pip3 install --no-index --find-links dist packaging
 ```
 ```bash
-
+cd ..
 ```
 ```bash
-
+rm
 ```
+### Wheel-0.46.3
 ```bash
-
+tar
 ```
 ```bash
-
+cd 
 ```
 ```bash
-
+pip3 wheel -w dist --no-cache-dir --no-build-isolation --no-deps $PWD
 ```
 ```bash
-
+pip3 install --no-index --find-links dist wheel
 ```
 ```bash
-
+cd ..
 ```
 ```bash
-
+rm
 ```
+### Setuptools-82.0.0
 ```bash
-
+tar
 ```
 ```bash
-
+cd 
 ```
 ```bash
-
+pip3 wheel -w dist --no-cache-dir --no-build-isolation --no-deps $PWD
 ```
 ```bash
-
+pip3 install --no-index --find-links dist setuptools
 ```
 ```bash
-
+cd ..
 ```
 ```bash
-
+rm
 ```
+### Ninja-1.13.2
 ```bash
-
+tar
 ```
 ```bash
-
+cd
 ```
 ```bash
-
+export NINJAJOBS=10
 ```
 ```bash
-
+sed -i '/int Guess/a \
+  int   j = 0;\
+  char* jobs = getenv( "NINJAJOBS" );\
+  if ( jobs != NULL ) j = atoi( jobs );\
+  if ( j > 0 ) return j;\
+' src/ninja.cc
 ```
 ```bash
-
+python3 configure.py --bootstrap --verbose
 ```
 ```bash
-
+install -vm755 ninja /usr/bin/
+install -vDm644 misc/bash-completion /usr/share/bash-completion/completions/ninja
+install -vDm644 misc/zsh-completion  /usr/share/zsh/site-functions/_ninja
 ```
 ```bash
-
+cd ..
 ```
 ```bash
-
+rm
 ```
+### Meson-1.10.1
 ```bash
-
+tar
 ```
 ```bash
-
+cd
 ```
 ```bash
-
+pip3 wheel -w dist --no-cache-dir --no-build-isolation --no-deps $PWD
 ```
 ```bash
-
+pip3 install --no-index --find-links dist meson
+install -vDm644 data/shell-completions/bash/meson /usr/share/bash-completion/completions/meson
+install -vDm644 data/shell-completions/zsh/_meson /usr/share/zsh/site-functions/_meson
 ```
 ```bash
-
+cd ..
 ```
 ```bash
-
+rm
 ```
+### Kmod-34.2
 ```bash
-
+tar
 ```
 ```bash
-
+cd
 ```
 ```bash
-
+mkdir -p build
+cd       build
 ```
 ```bash
-
+meson setup --prefix=/usr ..    \
+            --buildtype=release \
+            -D manpages=false
 ```
 ```bash
-
+ninja
 ```
 ```bash
-
+ninja install
 ```
 ```bash
-
+cd ../..
 ```
 ```bash
-
+rm
 ```
+### Coreutils-9.10
 ```bash
-
+tar
 ```
 ```bash
-
+cd
 ```
 ```bash
-
+patch -Np1 -i ../coreutils-9.10-i18n-1.patch
 ```
 ```bash
-
+autoreconf -fv
+automake -af
+FORCE_UNSAFE_CONFIGURE=1 ./configure \
+            --prefix=/usr
 ```
 ```bash
-
+make
 ```
 ```bash
-
+make NON_ROOT_USERNAME=tester check-root
 ```
 ```bash
-
+groupadd -g 102 dummy -U tester
 ```
 ```bash
-
+chown -R tester . 
 ```
 ```bash
-
+su tester -c "PATH=$PATH make -k RUN_EXPENSIVE_TESTS=yes check" \
+   < /dev/null
 ```
 ```bash
-
+groupdel dummy
 ```
 ```bash
-
+make install
 ```
 ```bash
-
+mv -v /usr/bin/chroot /usr/sbin
+mv -v /usr/share/man/man1/chroot.1 /usr/share/man/man8/chroot.8
+sed -i 's/"1"/"8"/' /usr/share/man/man8/chroot.8
 ```
 ```bash
-
+cd ..
 ```
 ```bash
-
+rm
 ```
+### Diffutils-3.12
 ```bash
-
+tar
 ```
 ```bash
-
+cd
 ```
 ```bash
-
+./configure --prefix=/usr
 ```
 ```bash
-
+make
 ```
 ```bash
-
+make check
 ```
 ```bash
-
+make install
 ```
 ```bash
-
+cd ..
 ```
 ```bash
-
+rm
 ```
+### Gawk-5.3.2
 ```bash
-
+tar
 ```
 ```bash
-
+cd
 ```
 ```bash
-
+sed -i 's/extras//' Makefile.in
 ```
 ```bash
-
+./configure --prefix=/usr
 ```
 ```bash
-
+make
 ```
 ```bash
-
+chown -R tester .
+su tester -c "PATH=$PATH make check"
 ```
 ```bash
-
+rm -f /usr/bin/gawk-5.3.2
+make install
 ```
 ```bash
-
+ln -sv gawk.1 /usr/share/man/man1/awk.1
 ```
 ```bash
-
+install -vDm644 doc/{awkforai.txt,*.{eps,pdf,jpg}} -t /usr/share/doc/gawk-5.3.2
 ```
 ```bash
-
+cd ..
 ```
 ```bash
-
+rm
 ```
+### Findutils-4.10.0
 ```bash
-
+tar
 ```
 ```bash
-
+cd
 ```
 ```bash
-
+./configure --prefix=/usr --localstatedir=/var/lib/locate
 ```
 ```bash
-
+make
 ```
 ```bash
-
+chown -R tester .
+su tester -c "PATH=$PATH make check"
 ```
 ```bash
-
+make install
 ```
 ```bash
-
+cd ..
 ```
 ```bash
-
+rm
 ```
+### Groff-1.23.0
 ```bash
-
+tar
 ```
 ```bash
-
-```
-```bash
-
+cd
 ```
 ```bash
 
