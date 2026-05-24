@@ -3648,84 +3648,92 @@ mkdir BLFS
 ```bash
 cd BLFS
 ```
+#### Ctrl+A then D >>> to Detach from session
 ```bash
-
+cd mnt/lfs/sources/BLFS
 ```
 ```bash
-
+wget https://github.com/rhboot/efibootmgr/archive/18/efibootmgr-18.tar.gz
 ```
 ```bash
-
+wget https://github.com/rhboot/efivar/archive/39/efivar-39.tar.gz
 ```
 ```bash
-
+wget https://ftp.osuosl.org/pub/rpm/popt/releases/popt-1.x/popt-1.19.tar.gz
 ```
 ```bash
-
+wget https://downloads.sourceforge.net/freetype/freetype-2.14.1.tar.xz
 ```
+#### Check MD5 sum
 ```bash
-
+md5sum *
 ```
+#### Reattach session
 ```bash
-
+screen -r lfs
 ```
+#### check list
 ```bash
-
+ls
 ```
+### efivar-39
 ```bash
-
+tar
 ```
 ```bash
-
+cd
 ```
 ```bash
-
+patch -Np1 -i ../efivar-39-upstream_fixes-1.patch
 ```
 ```bash
-
+make ENABLE_DOCS=0
 ```
 ```bash
-
+make install ENABLE_DOCS=0 LIBDIR=/usr/lib
 ```
 ```bash
-
+install -vm644 docs/efivar.1 /usr/share/man/man1 &&
+install -vm644 docs/*.3      /usr/share/man/man3
 ```
 ```bash
-
+cd ..
 ```
 ```bash
-
+rm
 ```
+### Popt-1.19
 ```bash
-
+tar
 ```
 ```bash
-
+cd
 ```
 ```bash
-
+./configure --prefix=/usr --disable-static &&
+make
 ```
 ```bash
-
+make install
 ```
 ```bash
-
+cd ..
 ```
 ```bash
-
+rm
 ```
+### efibootmgr-18
 ```bash
-
+tar
 ```
 ```bash
-
+cd
 ```
-
 ```bash
-
+make EFIDIR=LFS EFI_LOADER=grubx64.efi
 ```
 ```bash
-
+make install EFIDIR=LFS
 ```
 ```bash
 
@@ -3733,338 +3741,408 @@ cd BLFS
 ```bash
 
 ```
+### FreeType-2.14.1
 ```bash
-
+tar
 ```
 ```bash
-
+cd
 ```
 ```bash
+sed -ri "s:.*(AUX_MODULES.*valid):\1:" modules.cfg &&
+
+sed -r "s:.*(#.*SUBPIXEL_RENDERING) .*:\1:" \
+    -i include/freetype/config/ftoption.h   &&
 
+./configure --prefix=/usr            \
+            --disable-static         \
+            --enable-freetype-config \
+            --with-harfbuzz=dynamic  &&
+make
 ```
 ```bash
-
+make install
 ```
 ```bash
-
+cd ..
 ```
 ```bash
-
+rm
 ```
+### GRUB-2.14 for EFI
 ```bash
-
+md5sum ../grub-2.14.tar.xz
 ```
 ```bash
-
+tar xvf ../gr
 ```
-
 ```bash
-
+cd 
 ```
 ```bash
-
+mkdir -pv /usr/share/fonts/unifont &&
+zcat ../unifont-17.0.03.pcf.gz > /usr/share/fonts/unifont/unifont.pcf
 ```
 ```bash
-
+./configure --prefix=/usr        \
+            --sysconfdir=/etc    \
+            --disable-efiemu     \
+            --with-platform=efi  \
+            --target=x86_64      \
+            --disable-werror     &&
+make
 ```
 ```bash
-
+make install &&
+mv -v /etc/bash_completion.d/grub /usr/share/bash-completion/completions
 ```
 ```bash
-
+install -vm755 grub-mkfont /usr/bin/ &&
+install -vm644 ascii.h widthspec.h *.pf2 /usr/share/grub/
 ```
 ```bash
-
+cd ../..
 ```
+### Gzip-1.14
 ```bash
-
+tar
 ```
 ```bash
-
+cd
 ```
 ```bash
-
+./configure --prefix=/usr
 ```
 ```bash
-
+make
 ```
 ```bash
-
+make check
 ```
 ```bash
-
+make install
 ```
 ```bash
-
+cd ..
 ```
 ```bash
-
+rm
 ```
+### IPRoute2-6.18.0
 ```bash
-
+tar
 ```
 ```bash
-
+cd
 ```
 ```bash
-
+sed -i /ARPD/d Makefile
 ```
 ```bash
-
+rm -fv man/man8/arpd.8
 ```
 ```bash
-
+make NETNS_RUN_DIR=/run/netns
 ```
 ```bash
-
+make SBINDIR=/usr/sbin install
 ```
 ```bash
-
+install -vDm644 COPYING README* -t /usr/share/doc/iproute2-6.18.0
 ```
 ```bash
-
+cd ..
 ```
 ```bash
-
+rm
 ```
+### Kbd-2.9.0
 ```bash
-
+tar
 ```
 ```bash
-
+cd 
 ```
 ```bash
-
+patch -Np1 -i ../kbd-2.9.0-backspace-1.patch
 ```
 ```bash
-
+sed -i '/RESIZECONS_PROGS=/s/yes/no/' configure
+sed -i 's/resizecons.8 //' docs/man/man8/Makefile.in
 ```
 ```bash
-
+./configure --prefix=/usr --disable-vlock
 ```
 ```bash
-
+make
 ```
 ```bash
-
+make check
 ```
 ```bash
-
+make install
 ```
 ```bash
-
+cp -R -v docs/doc -T /usr/share/doc/kbd-2.9.0
 ```
 ```bash
-
+cd ..
 ```
 ```bash
-
+rm
 ```
+### Libpipeline-1.5.8
 ```bash
-
+tar
 ```
 ```bash
-
+cd
 ```
 ```bash
-
+./configure --prefix=/usr
 ```
 ```bash
-
+make
 ```
 ```bash
-
+make install
 ```
 ```bash
-
+cd ..
 ```
 ```bash
-
+rm
 ```
+### Make-4.4.1
 ```bash
-
+tar
 ```
 ```bash
-
+cd 
 ```
 ```bash
-
+./configure --prefix=/usr
 ```
 ```bash
-
+make
 ```
 ```bash
-
+chown -R tester .
+su tester -c "PATH=$PATH make check"
 ```
 ```bash
-
+make install
 ```
 ```bash
-
+cd ..
 ```
 ```bash
-
+rm
 ```
+### Patch-2.8
 ```bash
-
+tsr
 ```
 ```bash
-
+cd
 ```
 ```bash
-
+./configure --prefix=/usr
 ```
 ```bash
-
+make
 ```
 ```bash
-
+make check
 ```
 ```bash
-
+make install
 ```
 ```bash
-
+cd ..
 ```
 ```bash
-
+rm
 ```
+### Tar-1.35
 ```bash
-
+tar
 ```
 ```bash
-
+cd
 ```
 ```bash
-
+FORCE_UNSAFE_CONFIGURE=1  \
+./configure --prefix=/usr
 ```
 ```bash
-
+make
 ```
 ```bash
-
+make check
 ```
 ```bash
-
+make install
+make -C doc install-html docdir=/usr/share/doc/tar-1.35
 ```
 ```bash
-
+cd ..
 ```
 ```bash
-
+rm
 ```
+### Texinfo-7.2
 ```bash
-
+tar
 ```
-
 ```bash
-
+cd
 ```
 ```bash
-
+sed 's/! $output_file eq/$output_file ne/' -i tp/Texinfo/Convert/*.pm
 ```
 ```bash
-
+./configure --prefix=/usr
 ```
 ```bash
-
+make
 ```
 ```bash
-
+make check
 ```
 ```bash
-
+make install
 ```
 ```bash
-
+make TEXMF=/usr/share/texmf install-tex
 ```
 ```bash
-
+pushd /usr/share/info
+  rm -v dir
+  for f in *
+    do install-info $f dir 2>/dev/null
+  done
+popd
 ```
 ```bash
-
+cd ..
 ```
 ```bash
-
+rm
 ```
+### Vim-9.2.0078
 ```bash
-
+tar
 ```
 ```bash
-
+cd
 ```
 ```bash
-
+echo '#define SYS_VIMRC_FILE "/etc/vimrc"' >> src/feature.h
 ```
 ```bash
-
+./configure --prefix=/usr
 ```
 ```bash
-
+make
 ```
 ```bash
-
+chown -R tester .
+sed '/test_plugin_glvs/d' -i src/testdir/Make_all.mak
 ```
 ```bash
-
+su tester -c "TERM=xterm-256color LANG=en_US.UTF-8 make -j1 test" \
+   &> vim-test.log
 ```
 ```bash
-
+less vim-test.log
 ```
 ```bash
-
+make install
 ```
 ```bash
-
+ln -sv ../vim/vim92/doc /usr/share/doc/vim-9.2.0078
 ```
 ```bash
 
 ```
 ```bash
-
+cd ..
 ```
 ```bash
-
+rm
 ```
+### MarkupSafe-3.0.3
 ```bash
-
+tar
 ```
 ```bash
-
+cd 
 ```
 ```bash
-
+pip3 wheel -w dist --no-cache-dir --no-build-isolation --no-deps $PWD
 ```
 ```bash
-
+pip3 install --no-index --find-links dist Markupsafe
 ```
 ```bash
-
+cd ..
 ```
 ```bash
-
+rm
 ```
+### Jinja2-3.1.6
 ```bash
-
+tar
 ```
 ```bash
-
+cd
 ```
 ```bash
-
+pip3 wheel -w dist --no-cache-dir --no-build-isolation --no-deps $PWD
 ```
 ```bash
-
+pip3 install --no-index --find-links dist Jinja2
 ```
 ```bash
-
+cd ..
 ```
 ```bash
-
+rm
 ```
+### Systemd-259.1
 ```bash
-
+sed -e 's/GROUP="render"/GROUP="video"/' \
+    -e 's/GROUP="sgx", //'               \
+    -i rules.d/50-udev-default.rules.in
+```
+```bash
+mkdir -p build
+cd       build
+```
+```bash
+meson setup ..                \
+      --prefix=/usr           \
+      --buildtype=release     \
+      -D default-dnssec=no    \
+      -D firstboot=false      \
+      -D install-tests=false  \
+      -D ldconfig=false       \
+      -D sysusers=false       \
+      -D rpmmacrosdir=no      \
+      -D homed=disabled       \
+      -D man=disabled         \
+      -D mode=release         \
+      -D pamconfdir=no        \
+      -D dev-kvm-mode=0660    \
+      -D nobody-group=nogroup \
+      -D sysupdate=disabled   \
+      -D ukify=disabled       \
+      -D docdir=/usr/share/doc/systemd-259.1
 ```
+```bash
+ninja
+```
 
 ```bash
 
@@ -4072,158 +4150,205 @@ cd BLFS
 ```bash
 
 ```
+### D-Bus-1.16.2
 ```bash
-
+tar
 ```
 ```bash
-
+cd
 ```
 ```bash
-
+mkdir build
+cd    build
 ```
 ```bash
-
+meson setup --prefix=/usr --buildtype=release --wrap-mode=nofallback ..
 ```
 ```bash
-
+ninja
 ```
 ```bash
-
+ninja test
 ```
 ```bash
-
+ninja install
 ```
 ```bash
-
+ln -sfv /etc/machine-id /var/lib/dbus
 ```
 ```bash
-
+cd ..
 ```
 ```bash
-
+rm
 ```
+### Man-DB-2.13.1
 ```bash
-
+tsr
 ```
 ```bash
-
+cd
 ```
 ```bash
-
+./configure --prefix=/usr                         \
+            --docdir=/usr/share/doc/man-db-2.13.1 \
+            --sysconfdir=/etc                     \
+            --disable-setuid                      \
+            --enable-cache-owner=bin              \
+            --with-browser=/usr/bin/lynx          \
+            --with-vgrind=/usr/bin/vgrind         \
+            --with-grap=/usr/bin/grap
 ```
 ```bash
-
+make
 ```
 ```bash
-
+make check
 ```
 ```bash
-
+make install
 ```
 ```bash
-
+cd ..
 ```
 ```bash
-
+rm
 ```
+### Procps-ng-4.0.6
 ```bash
-
+tar
 ```
 ```bash
-
+cd
 ```
 ```bash
-
+./configure --prefix=/usr                           \
+            --docdir=/usr/share/doc/procps-ng-4.0.6 \
+            --disable-static                        \
+            --disable-kill                          \
+            --enable-watch8bit                      \
+            --with-systemd
 ```
 ```bash
-
+make
 ```
 ```bash
-
+chown -R tester .
+su tester -c "PATH=$PATH make check"
 ```
 ```bash
-
+make install
 ```
 ```bash
-
+cd ..
 ```
 ```bash
-
+rm
 ```
+### Util-linux-2.41.3
 ```bash
-
+tar
 ```
 ```bash
-
+cd
 ```
 ```bash
-
+./configure --bindir=/usr/bin     \
+            --libdir=/usr/lib     \
+            --runstatedir=/run    \
+            --sbindir=/usr/sbin   \
+            --disable-chfn-chsh   \
+            --disable-login       \
+            --disable-nologin     \
+            --disable-su          \
+            --disable-setpriv     \
+            --disable-runuser     \
+            --disable-pylibmount  \
+            --disable-liblastlog2 \
+            --disable-static      \
+            --without-python      \
+            ADJTIME_PATH=/var/lib/hwclock/adjtime \
+            --docdir=/usr/share/doc/util-linux-2.41.3
 ```
 ```bash
-
+make
 ```
 ```bash
-
+touch /etc/fstab
+chown -R tester .
+su tester -c "make -k check"
 ```
 ```bash
-
+make install
 ```
 ```bash
-
+cd ..
 ```
 ```bash
-
+rm
 ```
+### E2fsprogs-1.47.3
 ```bash
-
+tar
 ```
 ```bash
-
+cd
 ```
 ```bash
-
+mkdir -v build
+cd       build
 ```
 ```bash
-
+../configure --prefix=/usr       \
+             --sysconfdir=/etc   \
+             --enable-elf-shlibs \
+             --disable-libblkid  \
+             --disable-libuuid   \
+             --disable-uuidd     \
+             --disable-fsck
 ```
 ```bash
-
+make
 ```
 ```bash
-
+make check
 ```
 ```bash
-
+make install
 ```
 ```bash
-
+rm -fv /usr/lib/{libcom_err,libe2p,libext2fs,libss}.a
 ```
 ```bash
-
+gunzip -v /usr/share/info/libext2fs.info.gz
+install-info --dir-file=/usr/share/info/dir /usr/share/info/libext2fs.info
 ```
 ```bash
-
+makeinfo -o      doc/com_err.info ../lib/et/com_err.texinfo
+install -v -m644 doc/com_err.info /usr/share/info
+install-info --dir-file=/usr/share/info/dir /usr/share/info/com_err.info
 ```
 ```bash
 
 ```
 ```bash
-
+cd ..
 ```
 ```bash
-
+rm
 ```
+### Cleaning Up
 ```bash
-
+rm -rf /tmp/{*,.*}
 ```
 ```bash
-
+find /usr/lib /usr/libexec -name \*.la -delete
 ```
 ```bash
-
+find /usr -depth -name $(uname -m)-lfs-linux-gnu\* | xargs rm -rf
 ```
 ```bash
-
+userdel -r tester
 ```
 ```bash
 
