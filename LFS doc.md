@@ -195,7 +195,20 @@ chmod 755 $LFS
 ls -la $LFS
 ```
 ---
-
+### Start session
+```bash
+screen -S lfs
+```
+#### List sessions
+```bash
+screen -ls
+```
+#### Ctrl+A then D >>> to Detach from session
+#### Reattach session
+```bash
+screen -r lfs
+```
+---
 ## Step 6 — Create sources directory
 ```bash
 mkdir -v $LFS/sources
