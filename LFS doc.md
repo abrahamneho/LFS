@@ -3643,10 +3643,10 @@ rm
 ```
 ### GRUB-2.14
 ```bash
-
+mkdir BLFS
 ```
 ```bash
-
+cd BLFS
 ```
 ```bash
 
