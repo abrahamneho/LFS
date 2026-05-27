@@ -4353,22 +4353,42 @@ userdel -r tester
 ## Step -   General Network Configuration
 ### Network Device Naming
 ```bash
+systemctl disable systemd-networkd-wait-online
+```
+```bash
 ip link
 ```
 ```bash
 cat > /etc/systemd/network/10-eth-dhcp.network << "EOF"
 [Match]
-Name=wlo1
+Name=
 
 [Network]
 DHCP=ipv4
+
+[DHCPv4]
+UseDomains=true
 EOF
 ```
 ```bash
 echo "abrahamneho" > /etc/hostname
 ```
 ```bash
+cat > /etc/hosts << "EOF"
+# Begin /etc/hosts
 
+127.0.0.1 localhost
+::1       ip6-localhost ip6-loopback
+ff02::1   ip6-allnodes
+ff02::2   ip6-allrouters
+
+# End /etc/hosts
+EOF
+```
+### Configuring the System Clock
+#### View hardware clock
+```bash
+hwclock --localtime --show
 ```
 ```bash
 
@@ -4379,6 +4399,7 @@ echo "abrahamneho" > /etc/hostname
 ```bash
 
 ```
+### Configuring the System Clock
 ```bash
 
 ```
@@ -4388,6 +4409,7 @@ echo "abrahamneho" > /etc/hostname
 ```bash
 
 ```
+### Configuring the Linux Console
 ```bash
 
 ```
@@ -4397,6 +4419,7 @@ echo "abrahamneho" > /etc/hostname
 ```bash
 
 ```
+### Configuring the System Locale
 ```bash
 
 ```
@@ -4406,15 +4429,15 @@ echo "abrahamneho" > /etc/hostname
 ```bash
 
 ```
+### Creating the /etc/inputrc File
 ```bash
 
 ```
+### Creating the /etc/shells File
 ```bash
 
 ```
-```bash
-
-```
+### Systemd Usage and Configuration
 ```bash
 
 ```
