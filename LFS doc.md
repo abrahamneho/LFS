@@ -102,7 +102,8 @@ bash version-check.sh
 ### If any Error seems
 ```bash
 sudo apt update
-
+```
+```bash
 sudo apt install -y \
 <packages_name> \
 <next_packages_name>
