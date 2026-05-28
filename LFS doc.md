@@ -3204,10 +3204,10 @@ rm -rvf automake-1.18.1
 ```
 ### OpenSSL-3.6.1
 ```bash
-tar
+tar -xvf openssl-3.6.1.tar.gz
 ```
 ```bash
-cd
+cd openssl-3.6.1
 ```
 ```bash
 ./config --prefix=/usr         \
@@ -3236,14 +3236,14 @@ cp -vfr doc/* /usr/share/doc/openssl-3.6.1
 cd ..
 ```
 ```bash
-rm
+rm -rvf openssl-3.6.1
 ```
 ### Libelf from Elfutils-0.194
 ```bash
-tar
+tar -xvf elfutils-0.194.tar.bz2
 ```
 ```bash
-cd
+cd elfutils-0.194
 ```
 ```bash
 ./configure --prefix=/usr        \
@@ -3263,14 +3263,14 @@ rm /usr/lib/libelf.a
 cd ..
 ```
 ```bash
-rm
+rm -rvf elfutils-0.194
 ```
 ### Libffi-3.5.2
 ```bash
-tar
+tar -xvf libffi-3.5.2.tar.gz
 ```
 ```bash
-cd
+cd libffi-3.5.2
 ```
 ```bash
 ./configure --prefix=/usr    \
@@ -3290,7 +3290,7 @@ make install
 cd ..
 ```
 ```bash
-rm
+rm -rvf libffi-3.5.2
 ```
 ### Sqlite-3510200
 ```bash
