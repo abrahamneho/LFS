@@ -229,13 +229,18 @@ wget https://www.linuxfromscratch.org/lfs/view/stable-systemd/md5sums
 ```bash
 ls
 ```
+```bash
+cd -
+```
 ### Download the packages
 ```bash
 wget --input-file=wget-list-systemd --continue --directory-prefix=$LFS/sources
 ```
 ### Verify packages
 ```bash
-md5sum -c md5sums | less
+pushd $LFS/sources
+  md5sum -c md5sums
+popd
 ```
 ### Change the owners
 ```bash
