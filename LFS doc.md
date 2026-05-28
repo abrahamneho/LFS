@@ -1671,10 +1671,10 @@ rm -rvf glibc-2.43
 ```
 ### Zlib-1.3.2
 ```bash
-tar 
+tar -xvf zlib-1.3.2.tar.gz
 ```
 ```bash
-cd 
+cd zlib-1.3.2
 ```
 ```bash
 ./configure --prefix=/usr
@@ -1695,14 +1695,14 @@ rm -fv /usr/lib/libz.a
 cd ..
 ```
 ```bash
-rm
+rm -rvf zlib-1.3.2
 ```
 ### Bzip2-1.0.8
 ```bash
-tar
+tar -xvf bzip2-1.0.8.tar.gz
 ```
 ```bash
-cd 
+cd bzip2-1.0.8
 ```
 ```bash
 patch -Np1 -i ../bzip2-1.0.8-install_docs-1.patch
@@ -1749,14 +1749,14 @@ rm -fv /usr/lib/libbz2.a
 cd ..
 ```
 ```bash
-rm 
+rm -rvf bzip2-1.0.8
 ```
 ### Xz-5.8.2
 ```bash
-tar
+tar -xvf xz-5.8.2.tar.xz
 ```
 ```bash
-cd 
+cd xz-5.8.2 
 ```
 ```bash
 ./configure --prefix=/usr    \
@@ -1776,14 +1776,14 @@ make install
 cd ..
 ```
 ```bash
-rm 
+rm -rvf xz-5.8.2 
 ```
 ### Lz4-1.10.0
 ```bash
-tar
+tar -xvf lz4-1.10.0.tar.gz
 ```
 ```bash
-cd
+cd lz4-1.10.0
 ```
 ```bash
 make BUILD_STATIC=no PREFIX=/usr
@@ -1798,14 +1798,14 @@ make BUILD_STATIC=no PREFIX=/usr install
 cd ..
 ```
 ```bash
-rm
+rm -rvf lz4-1.10.0
 ```
 ### Zstd-1.5.7
 ```bash
-tar
+tar -xvf zstd-1.5.7.tar.gz
 ```
 ```bash
-cd
+cd zstd-1.5.7
 ```
 ```bash
 make prefix=/usr
@@ -1823,14 +1823,14 @@ rm -v /usr/lib/libzstd.a
 cd ..
 ```
 ```bash
-rm
+rm -rvf zstd-1.5.7
 ```
 ### File-5.46
 ```bash
-tar
+tar -xvf file-5.46.tar.gz
 ```
 ```bash
-cd
+cd file-5.46
 ```
 ```bash
 ./configure --prefix=/usr
@@ -1848,14 +1848,14 @@ make install
 cd ..
 ```
 ```bash
-rm
+rm -rvf file-5.46
 ```
 ### Readline-8.3
 ```bash
-tar
+tar -xvf readline-8.3.tar.gz
 ```
 ```bash
-cd
+cd readline-8.3
 ```
 ```bash
 sed -i '/MV.*old/d' Makefile.in
@@ -1890,14 +1890,14 @@ install -v -m644 doc/*.{ps,pdf,html,dvi} /usr/share/doc/readline-8.3
 cd ..
 ```
 ```bash
-rm
+rm -rvf readline-8.3
 ```
 ### Pcre2-10.47
 ```bash
-tar
+tar -xvf pcre2-10.47.tar.bz2
 ```
 ```bash
-cd
+cd pcre2-10.47
 ```
 ```bash
 ./configure --prefix=/usr                       \
@@ -1924,14 +1924,14 @@ make install
 cd ..
 ```
 ```bash
-rm
+rm -rvf pcre2-10.47
 ```
 ### M4-1.4.21
 ```bash
-tar
+tar -xvf m4-1.4.21.tar.xz
 ```
 ```bash
-cd
+cd m4-1.4.21
 ```
 ```bash
 ./configure --prefix=/usr
@@ -1949,7 +1949,7 @@ make install
 cd ..
 ```
 ```bash
-rm
+rm -rvf m4-1.4.21
 ```
 ### Bc-7.0.3
 ```bash
