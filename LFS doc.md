@@ -246,9 +246,6 @@ popd
 ```bash
 chown root:root $LFS/sources/*
 ```
-```bash
-ls -la
-```
 ---
 
 ## Step 8 — Creating a Limited Directory Layout
@@ -280,16 +277,19 @@ groupadd lfs
 ```bash
 useradd -s /bin/bash -g lfs -m -k /dev/null lfs
 ```
+### Create Password for lfs
 ```bash
 passwd lfs
 ```
+#### Enter new password
+#### Retype new password
 ### Grant LFS User full access
 ```bash
-chown -v <user_name> $LFS/{usr{,/*},var,etc,tools}
+chown -v lfs $LFS/{usr{,/*},var,etc,tools}
 ```
 ```bash
 case $(uname -m) in
-  x86_64) chown -v <user_name> $LFS/lib64 ;;
+  x86_64) chown -v lfs $LFS/lib64 ;;
 esac
 ```
 ### Login LFS User
