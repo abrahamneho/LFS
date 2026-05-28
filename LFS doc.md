@@ -3294,10 +3294,10 @@ rm -rvf libffi-3.5.2
 ```
 ### Sqlite-3510200
 ```bash
-tar
+tar -xvf sqlite-autoconf-3510200.tar.gz
 ```
 ```bash
-cd 
+cd sqlite-autoconf-3510200 
 ```
 ```bash
 tar -xf ../sqlite-doc-3510200.tar.xz
@@ -3325,7 +3325,7 @@ cp -v -R sqlite-doc-3510200/* /usr/share/doc/sqlite-3.51.2
 cd ..
 ```
 ```bash
-rm
+rm -rvf sqlite-autoconf-3510200
 ```
 ### Python-3.14.3
 ```bash
