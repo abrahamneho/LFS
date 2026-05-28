@@ -1,7 +1,7 @@
 # Linux from scratch (LSF) commands in 2K26.
 ---
 
-## Step 1 — Check whether your host system has all the appropriate versions
+## Check whether your host system has all the appropriate versions
 ```bash
 cat > version-check.sh << "EOF"
 #!/bin/bash
@@ -113,7 +113,7 @@ sudo apt install -y \
 ```
 ---
 
-## Step 2 — Start fdisk on your disk
+## Start fdisk on your disk
 ```bash
 lsblk
 ```
@@ -146,7 +146,7 @@ lsblk
 ```
 ---
 
-## Step 3 — Create an file system
+## Create an file system
 ### ext4 file system
 ```bash
 mkfs.ext4 /dev/<xxx>
@@ -161,7 +161,7 @@ mkswap /dev/<yyy>
 ```
 ---
 
-## Step 4 — Choose a directory location
+## Choose a directory location
 ### Set the variable
 ```bash
 export LFS=/mnt/lfs
@@ -180,7 +180,7 @@ umask
 ```
 ---
 
-## Step 5 — Create the mount point
+## Create the mount point
 ```bash
 mount --mkdir /dev/<xxx> $LFS
 ```
@@ -205,7 +205,7 @@ ls -la $LFS
 ```
 ---
 
-## Step 6 — Create sources directory
+## Create sources directory
 ```bash
 mkdir -v $LFS/sources
 ```
@@ -215,7 +215,7 @@ chmod -v a+wt $LFS/sources
 ```
 ---
 
-## Step 7 — All packages
+## All packages
 ### Download lists
 ```bash
 cd $LFS/sources
@@ -248,7 +248,7 @@ chown root:root $LFS/sources/*
 ```
 ---
 
-## Step 8 — Creating a Limited Directory Layout
+## Creating a Limited Directory Layout
 ```bash
 mkdir -pv $LFS/{etc,var} $LFS/usr/{bin,lib,sbin}
 ```
@@ -270,7 +270,7 @@ mkdir -pv $LFS/tools
 ```
 ---
 
-## Step 9 — Adding the LFS User
+## Adding the LFS User
 ```bash
 groupadd lfs
 ```
@@ -298,7 +298,7 @@ su - lfs
 ```
 ---
 
-## Step 10 — Creating two new startup files for the bash shell
+## Creating two new startup files for the bash shell
 ```bash
 cat > ~/.bash_profile << "EOF"
 exec env -i HOME=$HOME TERM=$TERM PS1='\u:\w\$ ' /bin/bash
@@ -318,7 +318,7 @@ CONFIG_SITE=$LFS/usr/share/config.site
 export LFS LC_ALL LFS_TGT PATH CONFIG_SITE
 EOF
 ```
-###  Set MAKEFLAGS
+### Set MAKEFLAGS
 ```bash
 nproc
 ```
@@ -335,7 +335,7 @@ echo $MAKEFLAGS
 ```
 ---
 
-## Step 11 - Compiling a Cross-Toolchain
+## Compiling a Cross-Toolchain
 ```bash
 echo $LFS
 ```
@@ -603,7 +603,7 @@ cd ../..
 ```bash
 rm -rvf gcc-15.2.0
 ```
-## Step - 12 Cross Compiling Temporary Tools
+## Cross Compiling Temporary Tools
 ### M4-1.4.21
 ```bash
 tar -xvf m4-1.4.21.tar.xz
@@ -1145,7 +1145,7 @@ cd ../..
 rm -rvf gcc-15.2.0
 ```
 ---
-## Step 13 - Entering Chroot and Building Additional Temporary Tools
+## Entering Chroot and Building Additional Temporary Tools
 ### Come back to root
 ```bash
 exit
@@ -1468,8 +1468,8 @@ cd ..
 ```bash
 rm -rvf util-linux-2.41.3
 ```
-## Step 14 - Cleaning up and Saving the Temporary System
-#### Cleaning
+## Cleaning up and Saving the Temporary System
+### Cleaning
 ```bash
 rm -rf /usr/share/{info,man,doc}/*
 ```
@@ -1479,7 +1479,7 @@ find /usr/{lib,libexec} -name \*.la -delete
 ```bash
 rm -rf /tools
 ```
-## Step 13 - Installing Basic System Software
+## Installing Basic System Software
 ### Man-pages-6.17
 ```bash
 tar -xvf man-pages-6.17.tar.xz
