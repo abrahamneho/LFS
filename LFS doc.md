@@ -99,6 +99,9 @@ EOF
 ```bash
 bash version-check.sh
 ```
+```bash
+su -
+```
 ### If any Error seems
 ```bash
 sudo apt update
@@ -128,6 +131,12 @@ n
 ### Choose partition number
 ### Choose first sector
 ### Choose last sector
+### change type
+``bash
+t
+``
+### Choose partition number
+### Partition type or alias
 ### Write changes
 ```bash
 w
@@ -140,11 +149,11 @@ lsblk
 ## Step 3 — Create an file system
 ### ext4 file system
 ```bash
-mkfs.ext4 ext4 /dev/<xxx>
+mkfs.ext4 /dev/<xxx>
 ```
 ### boot file system
 ```bash
-mkfs.fat -F 32 /dev/<zzz>
+mkfs.fat -F32 /dev/<zzz>
 ```
 ### Swap partition
 ```bash
