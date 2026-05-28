@@ -874,7 +874,7 @@ make
 make DESTDIR=$LFS install
 ```
 ```bash
-cd..
+cd ..
 ```
 ```bash
 rm -rvf grep-3.12
