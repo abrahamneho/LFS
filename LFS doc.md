@@ -132,9 +132,9 @@ n
 ### Choose first sector
 ### Choose last sector
 ### change type
-``bash
+```bash
 t
-``
+```
 ### Choose partition number
 ### Partition type or alias
 ### Write changes
@@ -162,7 +162,6 @@ mkswap /dev/<yyy>
 ---
 
 ## Step 4 — Choose a directory location
-
 ### Set the variable
 ```bash
 export LFS=/mnt/lfs
