@@ -188,7 +188,7 @@ mount --mkdir /dev/<xxx> $LFS
 mount --mkdir /dev/<zzz> $LFS/boot/efi
 ```
 ```bash
-swapon /dev/<yyy>
+/sbin/swapon -v /dev/<zzz>
 ```
 ```bash
 lsblk
