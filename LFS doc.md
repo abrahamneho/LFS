@@ -1303,12 +1303,13 @@ chgrp -v utmp /var/log/lastlog
 chmod -v 664  /var/log/lastlog
 chmod -v 600  /var/log/btmp
 ```
+#### Move to sources
 ```bash
 cd sources
 ```
 ### Gettext-1.0
 ```bash
-tar - xvf gettext-1.0.tar.xz
+tar -xvf gettext-1.0.tar.xz
 ```
 ```bash
 cd gettext-1.0
