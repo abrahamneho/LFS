@@ -3179,10 +3179,10 @@ rm -rvf autoconf-2.72
 ```
 ### Automake-1.18.1
 ```bash
-tar
+tar -xvf automake-1.18.1.tar.xz
 ```
 ```bash
-cd
+cd automake-1.18.1
 ```
 ```bash
 ./configure --prefix=/usr --docdir=/usr/share/doc/automake-1.18.1
@@ -3200,7 +3200,7 @@ make install
 cd ..
 ```
 ```bash
-rm
+rm -rvf automake-1.18.1
 ```
 ### OpenSSL-3.6.1
 ```bash
