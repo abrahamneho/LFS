@@ -1156,11 +1156,11 @@ echo $LFS
 ```
 ### change the ownership of the $LFS/*
 ```bash
-chown --from <user_name> -R root:root $LFS/{usr,var,etc,tools}
+chown --from lfs -R root:root $LFS/{usr,var,etc,tools}
 ```
 ```bash
 case $(uname -m) in
-  x86_64) chown --from <user_name> -R root:root $LFS/lib64 ;;
+  x86_64) chown --from lfs -R root:root $LFS/lib64 ;;
 esac
 ```
 ### Creating the directories
