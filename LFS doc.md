@@ -519,22 +519,45 @@ echo 'int main(){}' | $LFS_TGT-gcc -x c - -v -Wl,--verbose &> dummy.log
 ```bash
 readelf -l a.out | grep ': /lib'
 ```
-*[Requesting program interpreter: /lib64/ld-linux-x86-64.so.2]*
+`[Requesting program interpreter: /lib64/ld-linux-x86-64.so.2]`
+
 ```bash
 grep -E -o "$LFS/lib.*/S?crt[1in].*succeeded" dummy.log
 ```
+`/mnt/lfs/lib/../lib/Scrt1.o succeeded
+/mnt/lfs/lib/../lib/crti.o succeeded
+/mnt/lfs/lib/../lib/crtn.o succeeded`
+
 ```bash
 grep -B3 "^ $LFS/usr/include" dummy.log
 ```
+`#include <...> search starts here:
+ /mnt/lfs/tools/lib/gcc/x86_64-lfs-linux-gnu/15.2.0/include
+ /mnt/lfs/tools/lib/gcc/x86_64-lfs-linux-gnu/15.2.0/include-fixed
+ /mnt/lfs/usr/include`
+ 
 ```bash
 grep 'SEARCH.*/usr/lib' dummy.log |sed 's|; |\n|g'
 ```
+`SEARCH_DIR("=/mnt/lfs/tools/x86_64-lfs-linux-gnu/lib64")
+SEARCH_DIR("=/usr/local/lib64")
+SEARCH_DIR("=/lib64")
+SEARCH_DIR("=/usr/lib64")
+SEARCH_DIR("=/mnt/lfs/tools/x86_64-lfs-linux-gnu/lib")
+SEARCH_DIR("=/usr/local/lib")
+SEARCH_DIR("=/lib")
+SEARCH_DIR("=/usr/lib");`
+
 ```bash
 grep "/lib.*/libc.so.6 " dummy.log
 ```
+`attempt to open /mnt/lfs/usr/lib/libc.so.6 succeeded`
+
 ```bash
 grep found dummy.log
 ```
+`found ld-linux-x86-64.so.2 at /mnt/lfs/usr/lib/ld-linux-x86-64.so.2`
+
 ```bash
 rm -v a.out dummy.log
 ```
