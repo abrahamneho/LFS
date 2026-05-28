@@ -2878,10 +2878,10 @@ rm -rvf bash-5.3
 ```
 ### Libtool-2.5.4
 ```bash
-tar
+tar -xvf libtool-2.5.4.tar.xz
 ```
 ```bash
-cd
+cd libtool-2.5.4
 ```
 ```bash
 ./configure --prefix=/usr
@@ -2902,14 +2902,14 @@ rm -fv /usr/lib/libltdl.a
 cd ..
 ```
 ```bash
-rm
+rm -rvf libtool-2.5.4
 ```
 ### GDBM-1.26
 ```bash
-tar
+tar -xvf gdbm-1.26.tar.gz
 ```
 ```bash
-cd
+cd gdbm-1.26
 ```
 ```bash
 ./configure --prefix=/usr    \
@@ -2929,14 +2929,14 @@ make install
 cd ..
 ```
 ```bash
-rm
+rm -rvf gdbm-1.26
 ```
 ### Gperf-3.3
 ```bash
-tar
+tar -xvf gperf-3.3.tar.gz
 ```
 ```bash
-cd 
+cd gperf-3.3 
 ```
 ```bash
 ./configure --prefix=/usr --docdir=/usr/share/doc/gperf-3.3
@@ -2954,14 +2954,14 @@ make install
 cd ..
 ```
 ```bash
-rm
+rm -rvf gperf-3.3
 ```
 ### Expat-2.7.4
 ```bash
-tar
+tar -xvf expat-2.7.4.tar.xz
 ```
 ```bash
-cd
+cd expat-2.7.4
 ```
 ```bash
 ./configure --prefix=/usr    \
@@ -2984,14 +2984,14 @@ install -v -m644 doc/*.{html,css} /usr/share/doc/expat-2.7.4
 cd ..
 ```
 ```bash
-rm
+rm -rvf expat-2.7.4
 ```
 ### Inetutils-2.7
 ```bash
-tar
+tar -xvf inetutils-2.7.tar.gz
 ```
 ```bash
-cd
+cd inetutils-2.7
 ```
 ```bash
 sed -i 's/def HAVE_TERMCAP_TGETENT/ 1/' telnet/telnet.c
@@ -3024,14 +3024,14 @@ mv -v /usr/{,s}bin/ifconfig
 cd ..
 ```
 ```bash
-rm
+rm -rvf inetutils-2.7
 ```
 ### Less-692
 ```bash
-tar
+tar -xvf less-692.tar.gz
 ```
 ```bash
-cd 
+cd less-692 
 ```
 ```bash
 ./configure --prefix=/usr --sysconfdir=/etc
@@ -3049,14 +3049,14 @@ make install
 cd ..
 ```
 ```bash
-rm
+rm -rvf less-692
 ```
 ### Perl-5.42.0
 ```bash
-tar
+tar -xvf perl-5.42.0.tar.xz
 ```
 ```bash
-cd 
+cd perl-5.42.0 
 ```
 ```bash
 export BUILD_ZLIB=False
@@ -3094,14 +3094,14 @@ unset BUILD_ZLIB BUILD_BZIP2
 cd ..
 ```
 ```bash
-rm
+rm -rvf perl-5.42.0
 ```
 ### XML::Parser-2.47
 ```bash
-tar
+tar -xvf XML-Parser-2.47.tar.gz
 ```
 ```bash
-cd 
+cd XML-Parser-2.47 
 ```
 ```bash
 perl Makefile.PL
@@ -3119,14 +3119,14 @@ make install
 cd ..
 ```
 ```bash
-rm 
+rm -rvf XML-Parser-2.47 
 ```
 ### Intltool-0.51.0
 ```bash
-tar
+tar -xvf intltool-0.51.0.tar.gz
 ```
 ```bash
-cd
+cd intltool-0.51.0
 ```
 ```bash
 sed -i 's:\\\${:\\\$\\{:' intltool-update.in
@@ -3150,14 +3150,14 @@ install -v -Dm644 doc/I18N-HOWTO /usr/share/doc/intltool-0.51.0/I18N-HOWTO
 cd ..
 ```
 ```bash
-rm
+rm -rvf intltool-0.51.0
 ```
 ### Autoconf-2.72
 ```bash
-tar
+tar -xvf autoconf-2.72.tar.xz
 ```
 ```bash
-cd
+cd autoconf-2.72
 ```
 ```bash
 ./configure --prefix=/usr
@@ -3175,7 +3175,7 @@ make install
 cd ..
 ```
 ```bash
-rm
+rm -rvf autoconf-2.72
 ```
 ### Automake-1.18.1
 ```bash
