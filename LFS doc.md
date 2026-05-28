@@ -1953,10 +1953,10 @@ rm -rvf m4-1.4.21
 ```
 ### Bc-7.0.3
 ```bash
-tar
+tar -xvf bc-7.0.3.tar.xz
 ```
 ```bash
-cd
+cd bc-7.0.3
 ```
 ```bash
 CC='gcc -std=c99' ./configure --prefix=/usr -G -O3 -r
@@ -1974,14 +1974,14 @@ make install
 cd ..
 ```
 ```bash
-rm
+rm -rvf bc-7.0.3
 ```
 ### Flex-2.6.4
 ```bash
-tar
+tar -xvf flex-2.6.4.tar.gz
 ```
 ```bash
-cd
+cd flex-2.6.4
 ```
 ```bash
 ./configure --prefix=/usr    \
@@ -2005,14 +2005,14 @@ ln -sv flex.1 /usr/share/man/man1/lex.1
 cd ..
 ```
 ```bash
-rm
+rm -rvf flex-2.6.4
 ```
 ### Tcl-8.6.17
 ```bash
-tar
+tar -xvf tcl8.6.17-src.tar.gz
 ```
 ```bash
-cd
+cd tcl8.6.17
 ```
 ```bash
 SRCDIR=$(pwd)
@@ -2084,14 +2084,14 @@ cp -v -r  ./html/* /usr/share/doc/tcl-8.6.17
 cd ..
 ```
 ```bash
-rm
+rm -rvf tcl8.6.17
 ```
 ### Expect-5.45.4
 ```bash
-tar
+tar -xvf expect5.45.4.tar.gz 
 ```
 ```bash
-cd 
+cd expect5.45.4 
 ```
 ```bash
 python3 -c 'from pty import spawn; spawn(["echo", "ok"])'
@@ -2123,14 +2123,14 @@ ln -svf expect5.45.4/libexpect5.45.4.so /usr/lib
 cd ..
 ```
 ```bash
-rm
+rm -rvf expect5.45.4
 ```
 ### DejaGNU-1.6.3
 ```bash
-tar 
+tar -xvf dejagnu-1.6.3.tar.gz 
 ```
 ```bash
-cd 
+cd dejagnu-1.6.3 
 ```
 ```bash
 mkdir -v build
@@ -2152,17 +2152,17 @@ install -v -dm755  /usr/share/doc/dejagnu-1.6.3
 install -v -m644   doc/dejagnu.{html,txt} /usr/share/doc/dejagnu-1.6.3
 ```
 ```bash
-cd ..
+cd ../..
 ```
 ```bash
-rm
+rm -rvf dejagnu-1.6.3
 ```
 ### Pkgconf-2.5.1
 ```bash
-tar
+tar -xvf pkgconf-2.5.1.tar.xz
 ```
 ```bash
-cd
+cd pkgconf-2.5.1
 ```
 ```bash
 ./configure --prefix=/usr    \
@@ -2183,14 +2183,14 @@ ln -sv pkgconf.1 /usr/share/man/man1/pkg-config.1
 cd ..
 ```
 ```bash
-rm
+rm -rvf pkgconf-2.5.1
 ```
 ### Binutils-2.46.0
 ```bash
-tar
+tar -xvf binutils-2.46.0.tar.xz
 ```
 ```bash
-cd
+cd binutils-2.46.0
 ```
 ```bash
 mkdir -v build
@@ -2217,6 +2217,8 @@ make -k check
 ```bash
 grep '^FAIL:' $(find -name '*.log')
 ```
+`One test related to gprofng is known to fail.`
+
 ```bash
 make tooldir=/usr install
 ```
@@ -2225,17 +2227,17 @@ rm -rfv /usr/lib/lib{bfd,ctf,ctf-nobfd,gprofng,opcodes,sframe}.a \
         /usr/share/doc/gprofng/
 ```
 ```bash
-cd ..
+cd ../..
 ```
 ```bash
-rm
+rm -rvf binutils-2.46.0
 ```
 ### GMP-6.3.0
 ```bash
-tar
+tar -xvf gmp-6.3.0.tar.xz
 ```
 ```bash
-cd
+cd gmp-6.3.0
 ```
 ```bash
 sed -i '/long long t1;/,+1s/()/(...)/' configure
@@ -2268,14 +2270,14 @@ make install-html
 cd ..
 ```
 ```bash
-rm
+rm -rvf gmp-6.3.0
 ```
 ### MPFR-4.2.2
 ```bash
-tar
+tar -xvf mpfr-4.2.2.tar.xz
 ```
 ```bash
-cd
+cd mpfr-4.2.2
 ```
 ```bash
 ./configure --prefix=/usr        \
@@ -2302,14 +2304,14 @@ make install-html
 cd ..
 ```
 ```bash
-rm
+rm -rvf mpfr-4.2.2
 ```
 ### MPC-1.3.1
 ```bash
-tar
+tar -xvf mpc-1.3.1.tar.gz
 ```
 ```bash
-cd
+cd mpc-1.3.1
 ```
 ```bash
 ./configure --prefix=/usr    \
@@ -2335,14 +2337,14 @@ make install-html
 cd ..
 ```
 ```bash
-rm
+rm -rvf mpc-1.3.1
 ```
 ### Attr-2.5.2
 ```bash
-tar
+tar -xvf attr-2.5.2.tar.gz
 ```
 ```bash
-cd
+cd attr-2.5.2
 ```
 ```bash
 ./configure --prefix=/usr     \
@@ -2363,14 +2365,14 @@ make install
 cd ..
 ```
 ```bash
-rm
+rm -rvf attr-2.5.2
 ```
 ### Acl-2.3.2
 ```bash
-tar
+tar -xvf acl-2.3.2.tar.xz
 ```
 ```bash
-cd
+cd acl-2.3.2
 ```
 ```bash
 ./configure --prefix=/usr    \
@@ -2390,14 +2392,14 @@ make install
 cd ..
 ```
 ```bash
-rm
+rm -rvf acl-2.3.2
 ```
 ### Libcap-2.77
 ```bash
-tar
+tar -xvf libcap-2.77.tar.xz
 ```
 ```bash
-cd
+cd libcap-2.77
 ```
 ```bash
 sed -i '/install -m.*STA/d' libcap/Makefile
@@ -2415,14 +2417,14 @@ make prefix=/usr lib=lib install
 cd ..
 ```
 ```bash
-rm
+rm -rvf libcap-2.77
 ```
 ### Libxcrypt-4.5.2
 ```bash
-tar
+tar -xvf libxcrypt-4.5.2.tar.xz
 ```
 ```bash
-cd
+cd libxcrypt-4.5.2
 ```
 ```bash
 sed -i '/strchr/s/const//' lib/crypt-{sm3,gost}-yescrypt.c
@@ -2447,14 +2449,14 @@ make install
 cd ..
 ```
 ```bash
-rm
+rm -rvf libxcrypt-4.5.2
 ```
 ### Shadow-4.19.3
 ```bash
-tar
+tar -xvf shadow-4.19.3.tar.xz
 ```
 ```bash
-cd
+cd shadow-4.19.3
 ```
 ```bash
 sed -i 's/groups$(EXEEXT) //' src/Makefile.in
@@ -2513,14 +2515,14 @@ passwd root
 cd ..
 ```
 ```bash
-rm
+rm -rvf shadow-4.19.3
 ```
 ### GCC-15.2.0
 ```bash
-tar
+tar -xvf gcc-15.2.0.tar.xz
 ```
 ```bash
-cd
+cd gcc-15.2.0
 ```
 ```bash
 sed -i 's/char [*]q/const &/' libgomp/affinity-fmt.c
@@ -2588,21 +2590,46 @@ ln -sfv ../../libexec/gcc/$(gcc -dumpmachine)/15.2.0/liblto_plugin.so \
 echo 'int main(){}' | cc -x c - -v -Wl,--verbose &> dummy.log
 readelf -l a.out | grep ': /lib'
 ```
+`[Requesting program interpreter: /lib64/ld-linux-x86-64.so.2]`
+
 ```bash
 grep -E -o '/usr/lib.*/S?crt[1in].*succeeded' dummy.log
 ```
+`/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.0/../../../../lib/Scrt1.o succeeded
+/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.0/../../../../lib/crti.o succeeded
+/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.0/../../../../lib/crtn.o succeeded`
+
 ```bash
 grep -B4 '^ /usr/include' dummy.log
 ```
+`#include <...> search starts here:
+ /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.0/include
+ /usr/local/include
+ /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.0/include-fixed
+ /usr/include`
+ 
 ```bash
 grep 'SEARCH.*/usr/lib' dummy.log |sed 's|; |\n|g'
 ```
+`SEARCH_DIR("/usr/x86_64-pc-linux-gnu/lib64")
+SEARCH_DIR("/usr/local/lib64")
+SEARCH_DIR("/lib64")
+SEARCH_DIR("/usr/lib64")
+SEARCH_DIR("/usr/x86_64-pc-linux-gnu/lib")
+SEARCH_DIR("/usr/local/lib")
+SEARCH_DIR("/lib")
+SEARCH_DIR("/usr/lib");`
+
 ```bash
 grep "/lib.*/libc.so.6 " dummy.log
 ```
+`attempt to open /usr/lib/libc.so.6 succeeded`
+
 ```bash
 grep found dummy.log
 ```
+`found ld-linux-x86-64.so.2 at /usr/lib/ld-linux-x86-64.so.2`
+
 ```bash
 rm -v a.out dummy.log
 ```
@@ -2616,7 +2643,7 @@ mv -v /usr/lib/*gdb.py /usr/share/gdb/auto-load/usr/lib
 cd ../..
 ```
 ```bash
-rm
+rm -rvf gcc-15.2.0
 ```
 ### Ncurses-6.6
 ```bash
