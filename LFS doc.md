@@ -2595,30 +2595,30 @@ readelf -l a.out | grep ': /lib'
 ```bash
 grep -E -o '/usr/lib.*/S?crt[1in].*succeeded' dummy.log
 ```
-`/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.0/../../../../lib/Scrt1.o succeeded
-/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.0/../../../../lib/crti.o succeeded
-/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.0/../../../../lib/crtn.o succeeded`
+`/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.0/../../../../lib/Scrt1.o succeeded`
+`/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.0/../../../../lib/crti.o succeeded`
+`/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.0/../../../../lib/crtn.o succeeded`
 
 ```bash
 grep -B4 '^ /usr/include' dummy.log
 ```
-`#include <...> search starts here:
- /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.0/include
- /usr/local/include
- /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.0/include-fixed
- /usr/include`
+`#include <...> search starts here:`
+` /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.0/include`
+` /usr/local/include`
+` /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.0/include-fixed`
+` /usr/include`
  
 ```bash
 grep 'SEARCH.*/usr/lib' dummy.log |sed 's|; |\n|g'
 ```
-`SEARCH_DIR("/usr/x86_64-pc-linux-gnu/lib64")
-SEARCH_DIR("/usr/local/lib64")
-SEARCH_DIR("/lib64")
-SEARCH_DIR("/usr/lib64")
-SEARCH_DIR("/usr/x86_64-pc-linux-gnu/lib")
-SEARCH_DIR("/usr/local/lib")
-SEARCH_DIR("/lib")
-SEARCH_DIR("/usr/lib");`
+`SEARCH_DIR("/usr/x86_64-pc-linux-gnu/lib64")`
+`SEARCH_DIR("/usr/local/lib64")`
+`SEARCH_DIR("/lib64")`
+`SEARCH_DIR("/usr/lib64")`
+`SEARCH_DIR("/usr/x86_64-pc-linux-gnu/lib")`
+`SEARCH_DIR("/usr/local/lib")`
+`SEARCH_DIR("/lib")`
+`SEARCH_DIR("/usr/lib");`
 
 ```bash
 grep "/lib.*/libc.so.6 " dummy.log
@@ -2647,10 +2647,10 @@ rm -rvf gcc-15.2.0
 ```
 ### Ncurses-6.6
 ```bash
-tar
+tar -xvf ncurses-6.6.tar.gz 
 ```
 ```bash
-cd
+cd ncurses-6.6
 ```
 ```bash
 ./configure --prefix=/usr           \
@@ -2689,14 +2689,14 @@ cp -v -R doc -T /usr/share/doc/ncurses-6.6
 cd ..
 ```
 ```bash
-rm
+rm -rvf ncurses-6.6
 ```
 ### Sed-4.9
 ```bash
-tar
+tar -xvf sed-4.9.tar.xz
 ```
 ```bash
-cd
+cd sed-4.9
 ```
 ```bash
 ./configure --prefix=/usr
@@ -2726,14 +2726,14 @@ install -m644 doc/sed.html /usr/share/doc/sed-4.9
 cd ..
 ```
 ```bash
-rm
+rm -rvf sed-4.9
 ```
 ### Psmisc-23.7
 ```bash
-tar
+tar -xvf psmisc-23.7.tar.xz
 ```
 ```bash
-cd
+cd psmisc-23.7
 ```
 ```bash
 ./configure --prefix=/usr
@@ -2751,14 +2751,14 @@ make install
 cd ..
 ```
 ```bash
-rm
+rm -rvf psmisc-23.7
 ```
 ### Gettext-1.0
 ```bash
-tar
+tar -xvf gettext-1.0.tar.xz
 ```
 ```bash
-cd 
+cd gettext-1.0 
 ```
 ```bash
 ./configure --prefix=/usr    \
@@ -2781,14 +2781,14 @@ chmod -v 0755 /usr/lib/preloadable_libintl.so
 cd ..
 ```
 ```bash
-rm
+rm -rvf gettext-1.0
 ```
 ### Bison-3.8.2
 ```bash
-tar
+tar -xvf bison-3.8.2.tar.xz
 ```
 ```bash
-cd 
+cd bison-3.8.2 
 ```
 ```bash
 ./configure --prefix=/usr --docdir=/usr/share/doc/bison-3.8.2
@@ -2806,14 +2806,14 @@ make install
 cd ..
 ```
 ```bash
-rm
+rm -rvf bison-3.8.2
 ```
 ### Grep-3.12
 ```bash
-tar 
+tar -xvf grep-3.12.tar.xz 
 ```
 ```bash
-cd
+cd grep-3.12
 ```
 ```bash
 sed -i "s/echo/#echo/" src/egrep.sh
@@ -2834,14 +2834,14 @@ make install
 cd ..
 ```
 ```bash
-rm
+rm -rvf grep-3.12
 ```
 ### Bash-5.3
 ```bash
-tar
+tar -xvf bash-5.3.tar.gz
 ```
 ```bash
-cd
+cd bash-5.3
 ```
 ```bash
 ./configure --prefix=/usr             \
@@ -2874,7 +2874,7 @@ exec /usr/bin/bash --login
 cd ..
 ```
 ```bash
-rm
+rm -rvf bash-5.3
 ```
 ### Libtool-2.5.4
 ```bash
