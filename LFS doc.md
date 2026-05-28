@@ -392,7 +392,7 @@ tar -xvf ../gmp-6.3.0.tar.xz
 mv -v gmp-6.3.0 gmp
 ```
 ```bash
-tar -xf ../mpc-1.3.1.tar.gz
+tar -xvf ../mpc-1.3.1.tar.gz
 ```
 ```bash
 mv -v mpc-1.3.1 mpc
@@ -519,6 +519,7 @@ echo 'int main(){}' | $LFS_TGT-gcc -x c - -v -Wl,--verbose &> dummy.log
 ```bash
 readelf -l a.out | grep ': /lib'
 ```
+*[Requesting program interpreter: /lib64/ld-linux-x86-64.so.2]*
 ```bash
 grep -E -o "$LFS/lib.*/S?crt[1in].*succeeded" dummy.log
 ```
