@@ -3329,10 +3329,10 @@ rm -rvf sqlite-autoconf-3510200
 ```
 ### Python-3.14.3
 ```bash
-tar 
+tar -xvf Python-3.14.3.tar.xz 
 ```
 ```bash
-cd 
+cd Python-3.14.3 
 ```
 ```bash
 ./configure --prefix=/usr          \
@@ -3371,14 +3371,14 @@ tar --strip-components=1  \
 cd ..
 ```
 ```bash
-rm
+rm -rvf Python-3.14.3
 ```
 ### Flit-Core-3.12.0
 ```bash
-tar
+tar -xvf flit_core-3.12.0.tar.gz
 ```
 ```bash
-cd 
+cd flit_core-3.12.0 
 ```
 ```bash
 pip3 wheel -w dist --no-cache-dir --no-build-isolation --no-deps $PWD
@@ -3390,14 +3390,14 @@ pip3 install --no-index --find-links dist flit_core
 cd ..
 ```
 ```bash
-rm
+rm -rvf flit_core-3.12.0
 ```
 ### Packaging-26.0
 ```bash
-tar
+tar -xvf packaging-26.0.tar.gz
 ```
 ```bash
-cd
+cd packaging-26.0
 ```
 ```bash
 pip3 wheel -w dist --no-cache-dir --no-build-isolation --no-deps $PWD
@@ -3409,14 +3409,14 @@ pip3 install --no-index --find-links dist packaging
 cd ..
 ```
 ```bash
-rm
+rm -rvf packaging-26.0 
 ```
 ### Wheel-0.46.3
 ```bash
-tar
+tar -xvf wheel-0.46.3.tar.gz
 ```
 ```bash
-cd 
+cd wheel-0.46.3 
 ```
 ```bash
 pip3 wheel -w dist --no-cache-dir --no-build-isolation --no-deps $PWD
@@ -3428,14 +3428,14 @@ pip3 install --no-index --find-links dist wheel
 cd ..
 ```
 ```bash
-rm
+rm -rvf wheel-0.46.3
 ```
 ### Setuptools-82.0.0
 ```bash
-tar
+tar -xvf setuptools-82.0.0.tar.gz
 ```
 ```bash
-cd 
+cd setuptools-82.0.0 
 ```
 ```bash
 pip3 wheel -w dist --no-cache-dir --no-build-isolation --no-deps $PWD
@@ -3447,14 +3447,14 @@ pip3 install --no-index --find-links dist setuptools
 cd ..
 ```
 ```bash
-rm
+rm -rvf setuptools-82.0.0
 ```
 ### Ninja-1.13.2
 ```bash
-tar
+tar -xvf ninja-1.13.2.tar.gz
 ```
 ```bash
-cd
+cd ninja-1.13.2
 ```
 ```bash
 export NINJAJOBS=10
@@ -3479,14 +3479,14 @@ install -vDm644 misc/zsh-completion  /usr/share/zsh/site-functions/_ninja
 cd ..
 ```
 ```bash
-rm
+rm -rvf ninja-1.13.2
 ```
 ### Meson-1.10.1
 ```bash
-tar
+tar -xvf meson-1.10.1.tar.gz
 ```
 ```bash
-cd
+cd meson-1.10.1
 ```
 ```bash
 pip3 wheel -w dist --no-cache-dir --no-build-isolation --no-deps $PWD
@@ -3500,14 +3500,14 @@ install -vDm644 data/shell-completions/zsh/_meson /usr/share/zsh/site-functions/
 cd ..
 ```
 ```bash
-rm
+rm -rvf meson-1.10.1
 ```
 ### Kmod-34.2
 ```bash
-tar
+tar -xvf kmod-34.2.tar.xz
 ```
 ```bash
-cd
+cd kmod-34.2
 ```
 ```bash
 mkdir -p build
@@ -3528,14 +3528,14 @@ ninja install
 cd ../..
 ```
 ```bash
-rm
+rm -rvf kmod-34.2
 ```
 ### Coreutils-9.10
 ```bash
-tar
+tar -xvf coreutils-9.10.tar.xz
 ```
 ```bash
-cd
+cd coreutils-9.10
 ```
 ```bash
 patch -Np1 -i ../coreutils-9.10-i18n-1.patch
@@ -3577,14 +3577,14 @@ sed -i 's/"1"/"8"/' /usr/share/man/man8/chroot.8
 cd ..
 ```
 ```bash
-rm
+rm -rvf coreutils-9.10
 ```
 ### Diffutils-3.12
 ```bash
-tar
+tar -xvf diffutils-3.12.tar.xz
 ```
 ```bash
-cd
+cd diffutils-3.12
 ```
 ```bash
 ./configure --prefix=/usr
@@ -3602,14 +3602,14 @@ make install
 cd ..
 ```
 ```bash
-rm
+rm -rvf diffutils-3.12
 ```
 ### Gawk-5.3.2
 ```bash
-tar
+tar -xvf gawk-5.3.2.tar.xz
 ```
 ```bash
-cd
+cd gawk-5.3.2
 ```
 ```bash
 sed -i 's/extras//' Makefile.in
@@ -3638,14 +3638,14 @@ install -vDm644 doc/{awkforai.txt,*.{eps,pdf,jpg}} -t /usr/share/doc/gawk-5.3.2
 cd ..
 ```
 ```bash
-rm
+rm -rvf gawk-5.3.2
 ```
 ### Findutils-4.10.0
 ```bash
-tar
+tar -xvf findutils-4.10.0.tar.xz
 ```
 ```bash
-cd
+cd findutils-4.10.0
 ```
 ```bash
 ./configure --prefix=/usr --localstatedir=/var/lib/locate
@@ -3664,14 +3664,14 @@ make install
 cd ..
 ```
 ```bash
-rm
+rm -rvf findutils-4.10.0
 ```
 ### Groff-1.23.0
 ```bash
-tar
+tar -xvf groff-1.23.0.tar.gz
 ```
 ```bash
-cd
+cd groff-1.23.0
 ```
 ```bash
 PAGE=A4 ./configure --prefix=/usr
@@ -3689,7 +3689,7 @@ make install
 cd ..
 ```
 ```bash
-rm
+rm -rvf groff-1.23.0
 ```
 ### GRUB-2.14
 ```bash
