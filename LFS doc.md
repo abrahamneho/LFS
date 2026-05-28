@@ -229,12 +229,12 @@ wget https://www.linuxfromscratch.org/lfs/view/stable-systemd/md5sums
 ```bash
 ls
 ```
-```bash
-cd -
-```
 ### Download the packages
 ```bash
 wget --input-file=wget-list-systemd --continue --directory-prefix=$LFS/sources
+```
+```bash
+cd -
 ```
 ### Verify packages
 ```bash
