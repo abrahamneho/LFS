@@ -1482,10 +1482,10 @@ rm -rf /tools
 ## Step 13 - Installing Basic System Software
 ### Man-pages-6.17
 ```bash
-tar
+tar -xvf man-pages-6.17.tar.xz
 ```
 ```bash
-cd
+cd man-pages-6.17
 ```
 ```bash
 rm -v man3/crypt*
@@ -1497,14 +1497,14 @@ make -R GIT=false prefix=/usr install
 cd ..
 ```
 ```bash
-rm
+rm -rvf man-pages-6.17
 ```
 ### Iana-Etc-20260202
 ```bash
-tar
+tar -xvf iana-etc-20260202.tar.gz
 ```
 ```bash
-cd 
+cd iana-etc-20260202
 ```
 ```bash
 cp -v services protocols /etc
@@ -1513,14 +1513,14 @@ cp -v services protocols /etc
 cd ..
 ```
 ```bash
-rm 
+rm -rvf iana-etc-20260202 
 ```
 ### Glibc-2.43
 ```bash
-tar 
+tar -xvf glibc-2.43.tar.xz
 ```
 ```bash
-cd
+cd glibc-2.43
 ```
 ```bash
 patch -Np1 -i ../glibc-fhs-1.patch
@@ -1639,17 +1639,11 @@ unset ZONEINFO tz
 ```bash
 tzselect
 ```
+### Select a continent
+### Select a country
+### Conform Yes or No
 ```bash
-
-```
-```bash
-
-```
-```bash
-
-```
-```bash
-ln -sfv /usr/share/zoneinfo/<xxx> /etc/localtime
+ln -sfv /usr/share/zoneinfo/Asia/Kolkata /etc/localtime
 ```
 ```bash
 cat > /etc/ld.so.conf << "EOF"
@@ -1673,7 +1667,7 @@ mkdir -pv /etc/ld.so.conf.d
 cd ../..
 ```
 ```bash
-rm
+rm -rvf glibc-2.43
 ```
 ### Zlib-1.3.2
 ```bash
