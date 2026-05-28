@@ -337,6 +337,9 @@ echo $MAKEFLAGS
 
 ## Step 11 - Compiling a Cross-Toolchain
 ```bash
+echo $LFS
+```
+```bash
 cd $LFS/sources
 ```
 ### Binutils-2.46.0 - Pass 1
