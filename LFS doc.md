@@ -3907,10 +3907,10 @@ rm -rvf gzip-1.14
 ```
 ### IPRoute2-6.18.0
 ```bash
-tar
+tar -xvf iproute2-6.18.0.tar.xz
 ```
 ```bash
-cd
+cd iproute2-6.18.0
 ```
 ```bash
 sed -i /ARPD/d Makefile
@@ -3931,14 +3931,14 @@ install -vDm644 COPYING README* -t /usr/share/doc/iproute2-6.18.0
 cd ..
 ```
 ```bash
-rm
+rm -rvf iproute2-6.18.0
 ```
 ### Kbd-2.9.0
 ```bash
-tar
+tar -xvf kbd-2.9.0.tar.xz
 ```
 ```bash
-cd 
+cd kbd-2.9.0 
 ```
 ```bash
 patch -Np1 -i ../kbd-2.9.0-backspace-1.patch
@@ -3966,14 +3966,14 @@ cp -R -v docs/doc -T /usr/share/doc/kbd-2.9.0
 cd ..
 ```
 ```bash
-rm
+rm -rvf kbd-2.9.0
 ```
 ### Libpipeline-1.5.8
 ```bash
-tar
+tar -xvf libpipeline-1.5.8.tar.gz
 ```
 ```bash
-cd
+cd libpipeline-1.5.8
 ```
 ```bash
 ./configure --prefix=/usr
@@ -3988,14 +3988,14 @@ make install
 cd ..
 ```
 ```bash
-rm
+rm -rvf libpipeline-1.5.8
 ```
 ### Make-4.4.1
 ```bash
-tar
+tar -xvf make-4.4.1.tar.gz
 ```
 ```bash
-cd 
+cd make-4.4.1 
 ```
 ```bash
 ./configure --prefix=/usr
@@ -4014,14 +4014,14 @@ make install
 cd ..
 ```
 ```bash
-rm
+rm -rvf make-4.4.1
 ```
 ### Patch-2.8
 ```bash
-tsr
+tar -xvf patch-2.8.tar.xz
 ```
 ```bash
-cd
+cd patch-2.8
 ```
 ```bash
 ./configure --prefix=/usr
@@ -4039,14 +4039,14 @@ make install
 cd ..
 ```
 ```bash
-rm
+rm -rvf patch-2.8
 ```
 ### Tar-1.35
 ```bash
-tar
+tar -xvf tar-1.35.tar.xz
 ```
 ```bash
-cd
+cd tar-1.35
 ```
 ```bash
 FORCE_UNSAFE_CONFIGURE=1  \
@@ -4066,14 +4066,14 @@ make -C doc install-html docdir=/usr/share/doc/tar-1.35
 cd ..
 ```
 ```bash
-rm
+rm -rvf tar-1.35
 ```
 ### Texinfo-7.2
 ```bash
-tar
+tar -xvf texinfo-7.2.tar.xz
 ```
 ```bash
-cd
+cd texinfo-7.2
 ```
 ```bash
 sed 's/! $output_file eq/$output_file ne/' -i tp/Texinfo/Convert/*.pm
@@ -4105,14 +4105,14 @@ popd
 cd ..
 ```
 ```bash
-rm
+rm -rvf texinfo-7.2
 ```
 ### Vim-9.2.0078
 ```bash
-tar
+tar -xvf vim-9.2.0078.tar.gz
 ```
 ```bash
-cd
+cd vim-9.2.0078
 ```
 ```bash
 echo '#define SYS_VIMRC_FILE "/etc/vimrc"' >> src/feature.h
@@ -4141,20 +4141,39 @@ make install
 ln -sv ../vim/vim92/doc /usr/share/doc/vim-9.2.0078
 ```
 ```bash
+cat > /etc/vimrc << "EOF"
+" Begin /etc/vimrc
 
+" Ensure defaults are set before customizing settings, not after
+source $VIMRUNTIME/defaults.vim
+let skip_defaults_vim=1
+
+set nocompatible
+set backspace=2
+set mouse=
+syntax on
+if (&term == "xterm") || (&term == "putty")
+  set background=dark
+endif
+
+" End /etc/vimrc
+EOF
+```
+```bash
+vim -c ':options'
 ```
 ```bash
 cd ..
 ```
 ```bash
-rm
+rm -rvf vim-9.2.0078
 ```
 ### MarkupSafe-3.0.3
 ```bash
-tar
+tar -xvf markupsafe-3.0.3.tar.gz
 ```
 ```bash
-cd 
+cd markupsafe-3.0.3 
 ```
 ```bash
 pip3 wheel -w dist --no-cache-dir --no-build-isolation --no-deps $PWD
@@ -4166,14 +4185,14 @@ pip3 install --no-index --find-links dist Markupsafe
 cd ..
 ```
 ```bash
-rm
+rm -rvf markupsafe-3.0.3
 ```
 ### Jinja2-3.1.6
 ```bash
-tar
+tar -xvf jinja2-3.1.6.tar.gz
 ```
 ```bash
-cd
+cd jinja2-3.1.6
 ```
 ```bash
 pip3 wheel -w dist --no-cache-dir --no-build-isolation --no-deps $PWD
@@ -4185,7 +4204,7 @@ pip3 install --no-index --find-links dist Jinja2
 cd ..
 ```
 ```bash
-rm
+rm -rvf jinja2-3.1.6
 ```
 ### Systemd-259.1
 ```bash
