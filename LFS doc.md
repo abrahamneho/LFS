@@ -4568,31 +4568,107 @@ EOF
 ```
 ### Creating the /etc/inputrc File
 ```bash
+cat > /etc/inputrc << "EOF"
+# Begin /etc/inputrc
+# Modified by Chris Lynn <roryo@roryo.dynup.net>
 
+# Allow the command prompt to wrap to the next line
+set horizontal-scroll-mode Off
+
+# Enable 8-bit input
+set meta-flag On
+set input-meta On
+
+# Turns off 8th bit stripping
+set convert-meta Off
+
+# Keep the 8th bit for display
+set output-meta On
+
+# none, visible or audible
+set bell-style none
+
+# All of the following map the escape sequence of the value
+# contained in the 1st argument to the readline specific functions
+"\eOd": backward-word
+"\eOc": forward-word
+
+# for linux console
+"\e[1~": beginning-of-line
+"\e[4~": end-of-line
+"\e[5~": beginning-of-history
+"\e[6~": end-of-history
+"\e[3~": delete-char
+"\e[2~": quoted-insert
+
+# for xterm
+"\eOH": beginning-of-line
+"\eOF": end-of-line
+
+# for Konsole
+"\e[H": beginning-of-line
+"\e[F": end-of-line
+
+# End /etc/inputrc
+EOF
 ```
 ### Creating the /etc/shells File
 ```bash
+cat > /etc/shells << "EOF"
+# Begin /etc/shells
 
+/bin/sh
+/bin/bash
+
+# End /etc/shells
+EOF
 ```
 ### Systemd Usage and Configuration
+#### Disabling Screen Clearing at Boot Time
 ```bash
-
+mkdir -pv /etc/systemd/system/getty@tty1.service.d
 ```
 ```bash
-
+cat > /etc/systemd/system/getty@tty1.service.d/noclear.conf << EOF
+[Service]
+TTYVTDisallocate=no
+EOF
+```
+#### Working with Core Dumps
+```bash
+mkdir -pv /etc/systemd/coredump.conf.d
 ```
 ```bash
-
+cat > /etc/systemd/coredump.conf.d/maxuse.conf << EOF
+[Coredump]
+MaxUse=5G
+EOF
+```
+### Long Running Processes
+```bash
+vim /etc/systemd/logind.conf
+```
+`KillUserProcesses=no`
+## Making the LFS System Bootable
+### Creating the /etc/fstab File
+```bash
+lsblk -f
 ```
 ```bash
+cat > /etc/fstab << "EOF"
+# Begin /etc/fstab
 
-```
-```bash
+# file system       mount-point   type   options         dump  fsck
+#                                                              order
 
-```
-```bash
+/dev/nvme0n1p10     /             ext4   defaults        1    1
+/dev/nvme0n1p9      /boot/efi     vfat   defaults        0    2
+/dev/nvme0n1p11     swap          swap   sw              0    0
 
+# End /etc/fstab
+EOF
 ```
+### Linux-6.18.10
 ```bash
 
 ```
