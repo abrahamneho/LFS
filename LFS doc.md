@@ -4670,47 +4670,135 @@ EOF
 ```
 ### Linux-6.18.10
 ```bash
-
+tar -xvf linux-6.18.10.tar.xz
 ```
 ```bash
-
+cd linux-6.18.10
 ```
 ```bash
-
+make mrproper
 ```
 ```bash
-
+make defconfig
 ```
 ```bash
+make menuconfig
+```
+#### Be sure to enable/disable/set
+`General setup --->`
+`  [ ] Compile the kernel with warnings as errors                        [WERROR]`
+`  CPU/Task time and stats accounting --->`
+`    [*] Pressure stall information tracking                                [PSI]`
+`    [ ]   Require boot parameter to enable pressure stall information tracking`
+`                                                     ...  [PSI_DEFAULT_DISABLED]`
+`  < > Enable kernel headers through /sys/kernel/kheaders.tar.xz      [IKHEADERS]`
+`  [*] Control Group support --->                                       [CGROUPS]`
+`    [*]   Memory controller                                              [MEMCG]`
+`    [ /*] CPU controller --->                                     [CGROUP_SCHED]`
+`      # This may cause some systemd features malfunction:`
+`      [ ] Group scheduling for SCHED_RR/FIFO                    [RT_GROUP_SCHED]`
+`  [ ] Configure standard kernel features (expert users) --->            [EXPERT]`
 
+`Processor type and features --->`
+`  [*] Build a relocatable kernel                                   [RELOCATABLE]`
+`  [*]   Randomize the address of the kernel image (KASLR)       [RANDOMIZE_BASE]`
+
+`General architecture-dependent options --->`
+`  [*] Stack Protector buffer overflow detection                 [STACKPROTECTOR]`
+`  [*]   Strong Stack Protector                           [STACKPROTECTOR_STRONG]`
+
+`[*] Networking support --->                                                [NET]`
+`  Networking options --->`
+`    [*] TCP/IP networking                                                 [INET]`
+`    <*>   The IPv6 protocol --->                                          [IPV6]`
+
+`Device Drivers --->`
+`  Generic Driver Options --->`
+`    [ ] Support for uevent helper                                [UEVENT_HELPER]`
+`    [*] Maintain a devtmpfs filesystem to mount at /dev               [DEVTMPFS]`
+`    [*]   Automount devtmpfs at /dev, after the kernel mounted the rootfs`
+`                                                           ...  [DEVTMPFS_MOUNT]`
+`    Firmware loader --->`
+`      < /*> Firmware loading facility                                [FW_LOADER]`
+`      [ ]   Enable the firmware sysfs fallback mechanism [FW_LOADER_USER_HELPER]`
+`  Firmware Drivers --->`
+`    [*] Export DMI identification via sysfs to userspace                 [DMIID]`
+`    [*] Mark VGA/VBE/EFI FB as generic system framebuffer       [SYSFB_SIMPLEFB]`
+`  Graphics support --->`
+`    <*>    Direct Rendering Manager (XFree86 4.1.0 and higher DRI support) --->`
+`                                                                      ...  [DRM]`
+`    [*]    Display a user-friendly message when a kernel panic occurs`
+`                                                                ...  [DRM_PANIC]`
+`    (kmsg)   Panic screen formatter                           [DRM_PANIC_SCREEN]`
+`    Supported DRM clients --->`
+`      [*] Enable legacy fbdev support for your modesetting driver`
+`                                                      ...  [DRM_FBDEV_EMULATION]`
+`    Drivers for system framebuffers --->`
+`      <*> Simple framebuffer driver                              [DRM_SIMPLEDRM]`
+`    Console display driver support --->`
+`      [*] Framebuffer Console support                      [FRAMEBUFFER_CONSOLE]`
+
+`File systems --->`
+`  [*] Inotify support for userspace                               [INOTIFY_USER]`
+`  Pseudo filesystems --->`
+`    [*] Tmpfs virtual memory file system support (former shm fs)         [TMPFS]`
+`    [*]   Tmpfs POSIX Access Control Lists                     [TMPFS_POSIX_ACL]`
+
+#### Building a 64-bit system
+`Processor type and features --->`
+`  [*] x2APIC interrupt controller architecture support              [X86_X2APIC]`
+
+`Device Drivers --->`
+`  [*] PCI support --->                                                     [PCI]`
+`    [*] Message Signaled Interrupts (MSI and MSI-X)                    [PCI_MSI]`
+`  [*] IOMMU Hardware Support --->                                [IOMMU_SUPPORT]`
+`    [*] Support for Interrupt Remapping                              [IRQ_REMAP]`
+
+#### Enable NVME support
+`Device Drivers --->`
+`  NVME Support --->`
+`    <*> NVM Express block device                                  [BLK_DEV_NVME]`
+
+### Using GRUB to Set Up the Boot Process with UEFI
+#### Kernel Configuration for UEFI support
+`Processor type and features --->`
+`  [*] EFI runtime service support                                          [EFI]`
+`  [*]   EFI stub support                                              [EFI_STUB]`
+
+`-*- Enable the block layer --->                                          [BLOCK]`
+`  Partition Types --->`
+`    [ /*] Advanced partition selection                      [PARTITION_ADVANCED]`
+`    [*]     EFI GUID Partition support                           [EFI_PARTITION]`
+
+`File systems --->`
+`  DOS/FAT/EXFAT/NT Filesystems --->`
+`    <*/M> VFAT (Windows-95) fs support                                 [VFAT_FS]`
+`  Pseudo filesystems --->`
+`    <*/M> EFI Variable filesystem                                    [EFIVAR_FS]`
+`  -*- Native language support --->                                         [NLS]`
+`    <*/M> Codepage 437 (United States, Canada)                [NLS_CODEPAGE_437]`
+`    <*/M> NLS ISO 8859-1  (Latin 1; Western European Languages)  [NLS_ISO8859_1]`
+
+#### Back in Linux-6.18.10
+```bash
+make
 ```
 ```bash
-
+cp -iv arch/x86/boot/bzImage /boot/vmlinuz-6.18.10-lfs-13.0-systemd
 ```
 ```bash
-
+cp -iv System.map /boot/System.map-6.18.10
 ```
 ```bash
-
+cp -iv .config /boot/config-6.18.10
 ```
 ```bash
-
+cp -r Documentation -T /usr/share/doc/linux-6.18.10
 ```
 ```bash
-
+chown -R 0:0 ../linux-6.18.10
 ```
-```bash
-
-```
-```bash
-
-```
-```bash
-
-```
-```bash
-
-```
+### 
 ```bash
 
 ```
