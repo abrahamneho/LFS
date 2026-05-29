@@ -4208,6 +4208,12 @@ rm -rvf jinja2-3.1.6
 ```
 ### Systemd-259.1
 ```bash
+tar -xvf systemd-259.1.tar.gz
+```
+```bash
+cd systemd-259.1
+```
+```bash
 sed -e 's/GROUP="render"/GROUP="video"/' \
     -e 's/GROUP="sgx", //'               \
     -i rules.d/50-udev-default.rules.in
@@ -4239,19 +4245,36 @@ meson setup ..                \
 ```bash
 ninja
 ```
-
 ```bash
-
+echo 'NAME="Linux From Scratch"' > /etc/os-release
+unshare -m ninja test
 ```
 ```bash
-
+ninja install
+```
+```bash
+tar -xf ../../systemd-man-pages-259.1.tar.xz \
+    --no-same-owner --strip-components=1     \
+    -C /usr/share/man
+```
+```bash
+systemd-machine-id-setup
+```
+```bash
+systemctl preset-all
+```
+```bash
+cd ../..
+```
+```bash
+rm -rvf systemd-259.1
 ```
 ### D-Bus-1.16.2
 ```bash
-tar
+tar -xvf dbus-1.16.2.tar.xz
 ```
 ```bash
-cd
+cd dbus-1.16.2
 ```
 ```bash
 mkdir build
@@ -4273,17 +4296,17 @@ ninja install
 ln -sfv /etc/machine-id /var/lib/dbus
 ```
 ```bash
-cd ..
+cd ../..
 ```
 ```bash
-rm
+rm -rvf dbus-1.16.2
 ```
 ### Man-DB-2.13.1
 ```bash
-tsr
+tar -xvf man-db-2.13.1.tar.xz
 ```
 ```bash
-cd
+cd man-db-2.13.1
 ```
 ```bash
 ./configure --prefix=/usr                         \
@@ -4308,14 +4331,14 @@ make install
 cd ..
 ```
 ```bash
-rm
+rm -rvf man-db-2.13.1
 ```
 ### Procps-ng-4.0.6
 ```bash
-tar
+tar -xvf procps-ng-4.0.6.tar.xz
 ```
 ```bash
-cd
+cd procps-ng-4.0.6
 ```
 ```bash
 ./configure --prefix=/usr                           \
@@ -4339,14 +4362,14 @@ make install
 cd ..
 ```
 ```bash
-rm
+rm -rvf procps-ng-4.0.6
 ```
 ### Util-linux-2.41.3
 ```bash
-tar
+tar -xvf util-linux-2.41.3.tar.xz
 ```
 ```bash
-cd
+cd util-linux-2.41.3
 ```
 ```bash
 ./configure --bindir=/usr/bin     \
@@ -4381,14 +4404,14 @@ make install
 cd ..
 ```
 ```bash
-rm
+rm -rvf util-linux-2.41.3
 ```
 ### E2fsprogs-1.47.3
 ```bash
-tar
+tar -xvf e2fsprogs-1.47.3.tar.gz
 ```
 ```bash
-cd
+cd e2fsprogs-1.47.3
 ```
 ```bash
 mkdir -v build
@@ -4425,13 +4448,10 @@ install -v -m644 doc/com_err.info /usr/share/info
 install-info --dir-file=/usr/share/info/dir /usr/share/info/com_err.info
 ```
 ```bash
-
+cd ../..
 ```
 ```bash
-cd ..
-```
-```bash
-rm
+rm -rvf e2fsprogs-1.47.3
 ```
 ### Cleaning Up
 ```bash
@@ -4446,7 +4466,7 @@ find /usr -depth -name $(uname -m)-lfs-linux-gnu\* | xargs rm -rf
 ```bash
 userdel -r tester
 ```
-## Step -   General Network Configuration
+## General Network Configuration
 ### Network Device Naming
 ```bash
 systemctl disable systemd-networkd-wait-online
