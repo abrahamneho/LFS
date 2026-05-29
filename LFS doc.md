@@ -4469,15 +4469,12 @@ userdel -r tester
 ## General Network Configuration
 ### Network Device Naming
 ```bash
-systemctl disable systemd-networkd-wait-online
-```
-```bash
 ip link
 ```
 ```bash
 cat > /etc/systemd/network/10-eth-dhcp.network << "EOF"
 [Match]
-Name=
+Name=wlo1
 
 [Network]
 DHCP=ipv4
@@ -4506,44 +4503,68 @@ EOF
 ```bash
 hwclock --localtime --show
 ```
-```bash
-
-```
-```bash
-
-```
-```bash
-
-```
 ### Configuring the System Clock
 ```bash
-
-```
-```bash
-
-```
-```bash
-
+cat > /etc/adjtime << "EOF"
+0.0 0 0.0
+0
+LOCAL
+EOF
 ```
 ### Configuring the Linux Console
 ```bash
-
+echo FONT=Lat2-Terminus16 > /etc/vconsole.conf
 ```
 ```bash
-
-```
-```bash
-
+cat > /etc/vconsole.conf << "EOF"
+KEYMAP=us
+FONT=Lat2-Terminus16
+EOF
 ```
 ### Configuring the System Locale
 ```bash
-
+locale -a
 ```
 ```bash
-
+LC_ALL=C.utf8 locale language
 ```
 ```bash
+LC_ALL=C.utf8 locale charmap
+```
+```bash
+LC_ALL=C.utf8 locale int_curr_symbol
+```
+```bash
+LC_ALL=C.utf8 locale int_prefix
+```
+```bash
+cat > /etc/locale.conf << "EOF"
+LANG=C.UTF-8
+EOF
+```
+```bash
+cat > /etc/profile << "EOF"
+# Begin /etc/profile
 
+for i in $(locale); do
+  unset ${i%=*}
+done
+
+if [[ "$TERM" = linux ]]; then
+  export LANG=C.UTF-8
+else
+  source /etc/locale.conf
+
+  for i in $(locale); do
+    key=${i%=*}
+    if [[ -v $key ]]; then
+      export $key
+    fi
+  done
+fi
+
+# End /etc/profile
+EOF
 ```
 ### Creating the /etc/inputrc File
 ```bash
