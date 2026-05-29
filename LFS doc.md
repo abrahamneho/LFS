@@ -3698,7 +3698,13 @@ mkdir BLFS
 ```bash
 cd BLFS
 ```
-#### Ctrl+A then D >>> to Detach from session
+#### Open NEW terminal tab
+```bash
+su -
+```
+```bash
+cd ..
+```
 ```bash
 cd mnt/lfs/sources/BLFS
 ```
@@ -3709,29 +3715,43 @@ wget https://github.com/rhboot/efibootmgr/archive/18/efibootmgr-18.tar.gz
 wget https://github.com/rhboot/efivar/archive/39/efivar-39.tar.gz
 ```
 ```bash
+wget https://www.linuxfromscratch.org/patches/blfs/13.0/efivar-39-upstream_fixes-1.patch
+```
+```bash
 wget https://ftp.osuosl.org/pub/rpm/popt/releases/popt-1.x/popt-1.19.tar.gz
 ```
 ```bash
 wget https://downloads.sourceforge.net/freetype/freetype-2.14.1.tar.xz
 ```
+```bash
+wget https://downloads.sourceforge.net/freetype/freetype-doc-2.14.1.tar.xz
+```
+```bash
+wget https://unifoundry.com/pub/unifont/unifont-17.0.03/font-builds/unifont-17.0.03.pcf.gz
+```
 #### Check MD5 sum
 ```bash
 md5sum *
 ```
-#### Reattach session
-```bash
-screen -r lfs
-```
+`e170147da25e1d5f72721ffc46fe4e06  efibootmgr-18.tar.gz`
+`a8fc3e79336cd6e738ab44f9bc96a5aa  efivar-39.tar.gz`
+`231bf2f0502aa256de91cae7d921c2a5  efivar-39-upstream_fixes-1.patch`
+`78c7d7450fb7d0999ccd029f84094340  freetype-2.14.1.tar.xz`
+`6e08cb8bcd30802a4e8e65c2eb5071cc  freetype-doc-2.14.1.tar.xz`
+`eaa2135fddb6eb03f2c87ee1823e5a78  popt-1.19.tar.gz`
+`b926294d5bd663027223e424a7f557e3  unifont-17.0.03.pcf.gz`
+
+#### Back to CHROOT terminal tab
 #### check list
 ```bash
 ls
 ```
 ### efivar-39
 ```bash
-tar
+tar -xvf efivar-39.tar.gz
 ```
 ```bash
-cd
+cd efivar-39
 ```
 ```bash
 patch -Np1 -i ../efivar-39-upstream_fixes-1.patch
@@ -3750,14 +3770,14 @@ install -vm644 docs/*.3      /usr/share/man/man3
 cd ..
 ```
 ```bash
-rm
+rm -rvf efivar-39
 ```
 ### Popt-1.19
 ```bash
-tar
+tar -xvf popt-1.19.tar.gz
 ```
 ```bash
-cd
+cd popt-1.19
 ```
 ```bash
 ./configure --prefix=/usr --disable-static &&
@@ -3770,14 +3790,14 @@ make install
 cd ..
 ```
 ```bash
-rm
+rm -rvf popt-1.19
 ```
 ### efibootmgr-18
 ```bash
-tar
+tar -xvf efibootmgr-18.tar.gz
 ```
 ```bash
-cd
+cd efibootmgr-18
 ```
 ```bash
 make EFIDIR=LFS EFI_LOADER=grubx64.efi
@@ -3786,17 +3806,20 @@ make EFIDIR=LFS EFI_LOADER=grubx64.efi
 make install EFIDIR=LFS
 ```
 ```bash
-
+cd ..
 ```
 ```bash
-
+rm -rvf efibootmgr-18
 ```
 ### FreeType-2.14.1
 ```bash
-tar
+tar -xvf freetype-2.14.1.tar.xz
 ```
 ```bash
-cd
+cd freetype-2.14.1
+```
+```bash
+tar -xvf ../freetype-doc-2.14.1.tar.xz --strip-components=2 -C docs
 ```
 ```bash
 sed -ri "s:.*(AUX_MODULES.*valid):\1:" modules.cfg &&
@@ -3814,20 +3837,24 @@ make
 make install
 ```
 ```bash
+cp -v -R docs -T /usr/share/doc/freetype-2.14.1 &&
+rm -v /usr/share/doc/freetype-2.14.1/freetype-config.1
+```
+```bash
 cd ..
 ```
 ```bash
-rm
+rm -rvf freetype-2.14.1
 ```
 ### GRUB-2.14 for EFI
 ```bash
 md5sum ../grub-2.14.tar.xz
 ```
 ```bash
-tar xvf ../gr
+tar -xvf ../grub-2.14.tar.xz
 ```
 ```bash
-cd 
+cd grub-2.14/ 
 ```
 ```bash
 mkdir -pv /usr/share/fonts/unifont &&
@@ -3855,10 +3882,10 @@ cd ../..
 ```
 ### Gzip-1.14
 ```bash
-tar
+tar -xvf gzip-1.14.tar.xz
 ```
 ```bash
-cd
+cd gzip-1.14
 ```
 ```bash
 ./configure --prefix=/usr
@@ -3876,7 +3903,7 @@ make install
 cd ..
 ```
 ```bash
-rm
+rm -rvf gzip-1.14
 ```
 ### IPRoute2-6.18.0
 ```bash
