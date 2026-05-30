@@ -124,23 +124,9 @@ fdisk /dev/<xyz>
 ```bash
 p
 ```
-### Create a new partition
-```bash
-n
-```
-### Choose partition number
-### Choose first sector
-### Choose last sector
-### change type
-```bash
-t
-```
-### Choose partition number
-### Partition type or alias
-### Write changes
-```bash
-w
-```
+### Create a Root partition
+### Create a Swap partition
+### Create a Grub Bios partition
 ```bash
 lsblk
 ```
@@ -149,11 +135,7 @@ lsblk
 ## Create an file system
 ### ext4 file system
 ```bash
-mkfs.ext4 /dev/<xxx>
-```
-### boot file system
-```bash
-mkfs.fat -F32 /dev/<zzz>
+mkfs -v -t ext4 /dev/<xxx>
 ```
 ### Swap partition
 ```bash
@@ -161,8 +143,8 @@ mkswap /dev/<yyy>
 ```
 ---
 
-## Choose a directory location
-### Set the variable
+## Setting the $LFS Variable and the Umask
+### Choose a directory location
 ```bash
 export LFS=/mnt/lfs
 ```
@@ -181,17 +163,12 @@ umask
 ---
 
 ## Create the mount point
+### Create the ext4 mount point
 ```bash
-mount --mkdir /dev/<xxx> $LFS
+mkdir -pv $LFS
 ```
 ```bash
-mount --mkdir /dev/<zzz> $LFS/boot/efi
-```
-```bash
-/sbin/swapon -v /dev/<zzz>
-```
-```bash
-lsblk
+mount -v -t ext4 /dev/<xxx> $LFS
 ```
 ### Set the owner and permission mode
 ```bash
@@ -200,8 +177,12 @@ chown root:root $LFS
 ```bash
 chmod 755 $LFS
 ```
+## Create the swap mount point
 ```bash
-ls -la $LFS
+/sbin/swapon -v /dev/<zzz>
+```
+```bash
+lsblk
 ```
 ---
 
@@ -215,8 +196,8 @@ chmod -v a+wt $LFS/sources
 ```
 ---
 
-## All packages
-### Download lists
+### All packages
+#### Download lists
 ```bash
 cd $LFS/sources
 ```
@@ -229,12 +210,12 @@ wget https://www.linuxfromscratch.org/lfs/view/stable-systemd/md5sums
 ```bash
 ls
 ```
+```bash
+cd -
+```
 ### Download the packages
 ```bash
 wget --input-file=wget-list-systemd --continue --directory-prefix=$LFS/sources
-```
-```bash
-cd -
 ```
 ### Verify packages
 ```bash
@@ -262,6 +243,7 @@ case $(uname -m) in
   x86_64) mkdir -pv $LFS/lib64 ;;
 esac
 ```
+#### check x86_64 
 ```bash
 uname -m
 ```
