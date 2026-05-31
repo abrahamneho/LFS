@@ -2109,6 +2109,8 @@ cd expect5.45.4
 ```bash
 python3 -c 'from pty import spawn; spawn(["echo", "ok"])'
 ```
+`This command should output ok`
+
 ```bash
 patch -Np1 -i ../expect-5.45.4-gcc15-1.patch
 ```
