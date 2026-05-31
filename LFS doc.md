@@ -2272,6 +2272,8 @@ make html
 ```bash
 make check 2>&1 | tee gmp-check-log
 ```
+`Ensure that at least 199 tests in the test suite passed`
+
 ```bash
 awk '/# PASS:/{total+=$3} ; END{print total}' gmp-check-log
 ```
@@ -2309,6 +2311,8 @@ make html
 ```bash
 make check
 ```
+`Test the results and ensure that all 198 tests passed`
+
 ```bash
 make install
 ```
@@ -2400,6 +2404,8 @@ make
 ```bash
 make check
 ```
+`One test named test/cp.test is known to fail`
+
 ```bash
 make install
 ```
@@ -2526,6 +2532,7 @@ passwd root
 ```
 #### New password
 #### Re-enter new password
+
 ```bash
 cd ..
 ```
@@ -2584,6 +2591,12 @@ su tester -c "PATH=$PATH make -k check"
 ```bash
 ../contrib/test_summary
 ```
+`Four tests related to pr90579.c are known to fail.`
+
+`Five tests related to analyzer/strchr-1.c are known to fail.`
+
+`Four tests in libstdc++, 17_intro/badnames.cc, 17_intro/names.cc, 17_intro/names_fortify.cc, and experimental/names.cc, are known to fail due to changes with glibc-2.43.`
+
 ```bash
 make install
 ```
@@ -2724,8 +2737,6 @@ make html
 ```
 ```bash
 chown -R tester .
-```
-```bash
 su tester -c "PATH=$PATH make check"
 ```
 ```bash
@@ -2733,8 +2744,6 @@ make install
 ```
 ```bash
 install -d -m755           /usr/share/doc/sed-4.9
-```
-```bash
 install -m644 doc/sed.html /usr/share/doc/sed-4.9
 ```
 ```bash
