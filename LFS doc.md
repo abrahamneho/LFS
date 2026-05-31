@@ -497,8 +497,6 @@ sed '/RTLDLIST=/s@/usr@@g' -i $LFS/usr/bin/ldd
 ```
 ```bash
 echo 'int main(){}' | $LFS_TGT-gcc -x c - -v -Wl,--verbose &> dummy.log
-```
-```bash
 readelf -l a.out | grep ': /lib'
 ```
 `[Requesting program interpreter: /lib64/ld-linux-x86-64.so.2]`
@@ -506,29 +504,41 @@ readelf -l a.out | grep ': /lib'
 ```bash
 grep -E -o "$LFS/lib.*/S?crt[1in].*succeeded" dummy.log
 ```
-`/mnt/lfs/lib/../lib/Scrt1.o succeeded
-/mnt/lfs/lib/../lib/crti.o succeeded
-/mnt/lfs/lib/../lib/crtn.o succeeded`
+`/mnt/lfs/lib/../lib/Scrt1.o succeeded`
+
+`/mnt/lfs/lib/../lib/crti.o succeeded`
+
+`/mnt/lfs/lib/../lib/crtn.o succeeded`
 
 ```bash
 grep -B3 "^ $LFS/usr/include" dummy.log
 ```
-`#include <...> search starts here:
- /mnt/lfs/tools/lib/gcc/x86_64-lfs-linux-gnu/15.2.0/include
- /mnt/lfs/tools/lib/gcc/x86_64-lfs-linux-gnu/15.2.0/include-fixed
- /mnt/lfs/usr/include`
+`#include <...> search starts here:`
+
+` /mnt/lfs/tools/lib/gcc/x86_64-lfs-linux-gnu/15.2.0/include`
+
+` /mnt/lfs/tools/lib/gcc/x86_64-lfs-linux-gnu/15.2.0/include-fixed`
+
+` /mnt/lfs/usr/include`
  
 ```bash
 grep 'SEARCH.*/usr/lib' dummy.log |sed 's|; |\n|g'
 ```
-`SEARCH_DIR("=/mnt/lfs/tools/x86_64-lfs-linux-gnu/lib64")
-SEARCH_DIR("=/usr/local/lib64")
-SEARCH_DIR("=/lib64")
-SEARCH_DIR("=/usr/lib64")
-SEARCH_DIR("=/mnt/lfs/tools/x86_64-lfs-linux-gnu/lib")
-SEARCH_DIR("=/usr/local/lib")
-SEARCH_DIR("=/lib")
-SEARCH_DIR("=/usr/lib");`
+`SEARCH_DIR("=/mnt/lfs/tools/x86_64-lfs-linux-gnu/lib64")`
+
+`SEARCH_DIR("=/usr/local/lib64")`
+
+`SEARCH_DIR("=/lib64")`
+
+`SEARCH_DIR("=/usr/lib64")`
+
+`SEARCH_DIR("=/mnt/lfs/tools/x86_64-lfs-linux-gnu/lib")`
+
+`SEARCH_DIR("=/usr/local/lib")`
+
+`SEARCH_DIR("=/lib")`
+
+`SEARCH_DIR("=/usr/lib");`
 
 ```bash
 grep "/lib.*/libc.so.6 " dummy.log
@@ -585,6 +595,8 @@ cd ../..
 ```bash
 rm -rvf gcc-15.2.0
 ```
+---
+
 ## Cross Compiling Temporary Tools
 ### M4-1.4.21
 ```bash
@@ -645,11 +657,7 @@ make
 ```
 ```bash
 make DESTDIR=$LFS install
-```
-```bash
 ln -sv libncursesw.so $LFS/usr/lib/libncurses.so
-```
-```bash
 sed -e 's/^#if.*XOPEN.*$/#if 1/' \
     -i $LFS/usr/include/curses.h
 ```
@@ -1127,6 +1135,7 @@ cd ../..
 rm -rvf gcc-15.2.0
 ```
 ---
+
 ## Entering Chroot and Building Additional Temporary Tools
 ### Come back to root
 ```bash
@@ -1160,6 +1169,7 @@ mount -vt proc proc $LFS/proc
 mount -vt sysfs sysfs $LFS/sys
 mount -vt tmpfs tmpfs $LFS/run
 ```
+### Create /dev/shm & Mount a tmpfs
 ```bash
 if [ -h $LFS/dev/shm ]; then
   install -v -d -m 1777 $LFS$(realpath /dev/shm)
