@@ -1460,8 +1460,8 @@ cd ..
 ```bash
 rm -rvf util-linux-2.41.3
 ```
-## Cleaning up and Saving the Temporary System
-### Cleaning
+### Cleaning up and Saving the Temporary System
+#### Cleaning
 ```bash
 rm -rf /usr/share/{info,man,doc}/*
 ```
@@ -1470,6 +1470,26 @@ find /usr/{lib,libexec} -name \*.la -delete
 ```
 ```bash
 rm -rf /tools
+```
+#### Backup
+```bash
+
+```
+```bash
+
+```
+```bash
+
+```
+#### Restore
+```bash
+
+```
+```bash
+
+```
+```bash
+
 ```
 ## Installing Basic System Software
 ### Man-pages-6.17
@@ -1538,6 +1558,8 @@ make
 ```bash
 make check
 ```
+`io/tst-lchmod is known to fail in the LFS chroot environment`
+
 ```bash
 touch /etc/ld.so.conf
 ```
@@ -1589,6 +1611,7 @@ localedef -i zh_TW -f UTF-8 zh_TW.UTF-8
 ```bash
 make localedata/install-locales
 ```
+#### Configuring Glibc
 ```bash
 cat > /etc/nsswitch.conf << "EOF"
 # Begin /etc/nsswitch.conf
@@ -1635,8 +1658,10 @@ tzselect
 ### Select a country
 ### Conform Yes or No
 ```bash
-ln -sfv /usr/share/zoneinfo/Asia/Kolkata /etc/localtime
+ln -sfv /usr/share/zoneinfo/<xxx> /etc/localtime
 ```
+` Replace <xxx> with the name of the time zone selected (e.g., Asia/Kolkata)`
+
 ```bash
 cat > /etc/ld.so.conf << "EOF"
 # Begin /etc/ld.so.conf
@@ -1719,8 +1744,6 @@ make PREFIX=/usr install
 ```
 ```bash
 cp -av libbz2.so.* /usr/lib
-```
-```bash
 ln -sfv libbz2.so.1.0.8 /usr/lib/libbz2.so
 ```
 ```bash
@@ -1728,8 +1751,6 @@ ln -sfv libbz2.so.1.0.8 /usr/lib/libbz2.so.1
 ```
 ```bash
 cp -v bzip2-shared /usr/bin/bzip2
-```
-```bash
 for i in /usr/bin/{bzcat,bunzip2}; do
   ln -sfv bzip2 $i
 done
